@@ -1,0 +1,19 @@
+{
+  "warehouse_domain": "processus_de_vente",
+  "scd_strategy_v1": "Type 1 dimensions with unknown rows. Keep source IDs and load metadata. Prepare columns for Type 2 later where useful, but do not implement historical dimension versioning in v1.",
+  "power_bi_strategy": "Use mart CSVs for first beginner dashboards. Keep dim/fact CSVs available for advanced model building and validation.",
+  "current_history_policy": "Use currently available data only. The model is designed so future 24-month extracts can be loaded without changing the star schema.",
+  "source_paths": {
+    "clean_csv_dir": "Youssef_Extractions/vente_clean_import/csv",
+    "clean_manifest": "Youssef_Extractions/vente_clean_import/manifest.json",
+    "enrichment_csv_dir": "Youssef_Extractions/vente_bi_enrichment_import/csv",
+    "fourth_extraction_dir": "Youssef_Extractions/4th_Extraction"
+  },
+  "outputs": {
+    "staging": "DataWareHouse/processus_de_vente/etl/output/staging",
+    "dimensions": "DataWareHouse/processus_de_vente/etl/output/dimensions",
+    "facts": "DataWareHouse/processus_de_vente/etl/output/facts",
+    "marts": "DataWareHouse/processus_de_vente/etl/output/marts",
+    "validation": "DataWareHouse/processus_de_vente/etl/validation"
+  }
+}

@@ -1,0 +1,70 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${APP_DATABASE_URL:jdbc:postgresql://localhost:5433/lpn_ai_bi}
+    username: ${APP_DATABASE_USER:lpn_app_admin}
+    password: ${APP_DATABASE_PASSWORD:change_me_app_admin}
+
+auth:
+  api-protection-enabled: ${AUTH_API_PROTECTION_ENABLED:true}
+  cookie:
+    name: ${AUTH_COOKIE_NAME:lpn_session}
+    secure: ${AUTH_COOKIE_SECURE:false}
+    same-site: Strict
+  session:
+    standard-ttl: 12h
+    remembered-ttl: 30d
+  password:
+    bcrypt-strength: ${AUTH_BCRYPT_STRENGTH:12}
+  bootstrap-admin:
+    username: ${AUTH_BOOTSTRAP_ADMIN_USERNAME:admin}
+    password: ${AUTH_BOOTSTRAP_ADMIN_PASSWORD:}
+  rate-limit:
+    login-attempts: ${AUTH_LOGIN_ATTEMPTS:10}
+    login-window: 15m
+    signup-attempts: ${AUTH_SIGNUP_ATTEMPTS:5}
+    signup-window: 1h
+
+bi:
+  datasource:
+    readonly:
+      url: ${BI_READONLY_DATABASE_URL:jdbc:postgresql://localhost:5432/lpn_ai_bi?options=-c%20statement_timeout%3D30000%20-c%20search_path%3Dmart}
+      username: ${BI_READONLY_DATABASE_USER:lpn_ai_readonly}
+      password: ${BI_READONLY_DATABASE_PASSWORD:change_me_ai_readonly}
+      query-timeout-seconds: ${BI_QUERY_TIMEOUT_SECONDS:30}
+
+ollama:
+  base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+  sql-model: ${SQL_MODEL:qwen2.5-coder:7b}
+  sql-reasoning-model: ${SQL_REASONING_MODEL:qwen2.5-coder:14b}
+  sql-fallback-model: ${SQL_FALLBACK_MODEL:qwen2.5-coder:7b}
+  narrator-model: ${NARRATOR_MODEL:llama3.2:3b}
+  sql-timeout-seconds: ${SQL_MODEL_TIMEOUT_SECONDS:${OLLAMA_TIMEOUT_SECONDS:240}}
+  sql-reasoning-timeout-seconds: ${SQL_REASONING_MODEL_TIMEOUT_SECONDS:${SQL_MODEL_TIMEOUT_SECONDS:${OLLAMA_TIMEOUT_SECONDS:360}}}
+  narrator-timeout-seconds: ${NARRATOR_MODEL_TIMEOUT_SECONDS:150}
+  keep-alive-seconds: ${OLLAMA_KEEP_ALIVE_SECONDS:1800}
+  num-ctx: ${OLLAMA_NUM_CTX:4096}
+  sql-num-predict: ${SQL_MODEL_NUM_PREDICT:256}
+  narrator-num-predict: ${NARRATOR_MODEL_NUM_PREDICT:512}
+  sql-num-gpu: ${SQL_MODEL_NUM_GPU:0}
+  narrator-num-gpu: ${NARRATOR_MODEL_NUM_GPU:0}
+
+schema-retrieval:
+  base-url: ${SCHEMA_RETRIEVAL_BASE_URL:http://localhost:8084}
+
+sql-executor:
+  base-url: ${SQL_EXECUTOR_BASE_URL:http://localhost:8082}
+
+predictive:
+  base-url: ${PREDICTIVE_BASE_URL:http://localhost:8085}
+
+performance-tracing:
+  enabled: ${PERFORMANCE_TRACING_ENABLED:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

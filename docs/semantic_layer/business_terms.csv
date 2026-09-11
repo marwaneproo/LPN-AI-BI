@@ -1,0 +1,43 @@
+term,language,canonical_concept,term_type,preferred_metric,preferred_tables,join_path,notes
+CA,fr,chiffre_affaires,metric_alias,ca_facture,C_INVOICE|C_INVOICELINE,Use C_INVOICE for invoice header totals or C_INVOICELINE for product/category detail,If user says CA without command/facture prefer CA facture unless dashboard context says orders.
+chiffre d'affaires,fr,chiffre_affaires,metric_alias,ca_facture,C_INVOICE|C_INVOICELINE,Use invoice dates for realized invoiced revenue,Do not use nonexistent C_INVOICE.INVOICEAMT. Use GRANDTOTAL or line net amount.
+ventes facturees,fr,chiffre_affaires_facture,metric_alias,ca_facture,C_INVOICE|C_INVOICELINE,C_INVOICE.C_INVOICE_ID -> C_INVOICELINE.C_INVOICE_ID,Confirmed invoiced sales.
+CA facture,fr,chiffre_affaires_facture,metric_alias,ca_facture,C_INVOICE|C_INVOICELINE,C_INVOICE.C_INVOICE_ID -> C_INVOICELINE.C_INVOICE_ID,Use DATEINVOICED for periods.
+facture,fr,facture_client,business_object,nombre_factures,C_INVOICE,C_INVOICE.C_BPARTNER_ID -> C_BPARTNER.C_BPARTNER_ID,Customer invoice header.
+factures impayees,fr,risque_encaissement,metric_alias,factures_impayees,C_INVOICE|C_BPARTNER,C_INVOICE.C_BPARTNER_ID -> C_BPARTNER.C_BPARTNER_ID,Use C_INVOICE.ISPAID = 'N'.
+factures payees,fr,encaissement,metric_alias,factures_payees,C_INVOICE,C_INVOICE.ISPAID,Use C_INVOICE.ISPAID = 'Y'.
+commande,fr,commande_client,business_object,nombre_commandes,C_ORDER,C_ORDER.C_BPARTNER_ID -> C_BPARTNER.C_BPARTNER_ID,Sales order header.
+commandes,fr,commande_client,business_object,nombre_commandes,C_ORDER,C_ORDER.C_ORDER_ID -> C_ORDERLINE.C_ORDER_ID,Sales order count or rows.
+CA commande,fr,chiffre_affaires_commande,metric_alias,ca_commande,C_ORDER|C_ORDERLINE,C_ORDER.C_ORDER_ID -> C_ORDERLINE.C_ORDER_ID,Use DATEORDERED for periods.
+valeur commandee,fr,chiffre_affaires_commande,metric_alias,ca_commande,C_ORDER|C_ORDERLINE,C_ORDER.GRANDTOTAL or C_ORDERLINE.LINENETAMT,Order value before/including tax depending grain.
+montant commande,fr,chiffre_affaires_commande,metric_alias,ca_commande,C_ORDER|C_ORDERLINE,C_ORDER.GRANDTOTAL or C_ORDERLINE.LINENETAMT,Order amount.
+commercial,fr,commercial,business_dimension,ca_commande,V_SALESREP_USER|AD_USER|C_ORDER,C_ORDER.SALESREP_ID -> V_SALESREP_USER.SALESREP_ID,Use V_SALESREP_USER for readable names.
+vendeur,fr,commercial,business_dimension,ca_commande,V_SALESREP_USER|C_ORDER,C_ORDER.SALESREP_ID -> V_SALESREP_USER.SALESREP_ID,Same as commercial.
+sales rep,en,commercial,business_dimension,ca_commande,V_SALESREP_USER|C_ORDER,C_ORDER.SALESREP_ID -> V_SALESREP_USER.SALESREP_ID,English synonym.
+client,fr,client,business_dimension,ca_facture,C_BPARTNER|C_ORDER|C_INVOICE,C_BPARTNER.C_BPARTNER_ID -> C_ORDER/C_INVOICE.C_BPARTNER_ID,Use C_BPARTNER for customer names.
+top clients,fr,classement_clients,ranking,top_clients_ca_facture,C_INVOICE|C_BPARTNER,C_INVOICE.C_BPARTNER_ID -> C_BPARTNER.C_BPARTNER_ID,Rank by CA facture unless user asks commandes.
+produit,fr,produit,business_dimension,ca_facture,M_PRODUCT|C_INVOICELINE,C_INVOICELINE.M_PRODUCT_ID -> M_PRODUCT.M_PRODUCT_ID,Use product names from M_PRODUCT.
+article,fr,produit,business_dimension,ca_facture,M_PRODUCT|C_ORDERLINE|C_INVOICELINE,Line table M_PRODUCT_ID -> M_PRODUCT.M_PRODUCT_ID,Article and product are equivalent in this vente scope.
+type d'article,fr,type_article,business_dimension,ca_facture,M_PRODUCT_TYPE|M_PRODUCT_CATEGORY|M_PRODUCT,Prefer M_PRODUCT_TYPE when possible else category as dashboard fallback,Current frontend often uses category as type d'article.
+categorie,fr,categorie_produit,business_dimension,ca_facture,M_PRODUCT_CATEGORY|M_PRODUCT,M_PRODUCT.M_PRODUCT_CATEGORY_ID -> M_PRODUCT_CATEGORY.M_PRODUCT_CATEGORY_ID,Product family/category.
+famille produit,fr,categorie_produit,business_dimension,ca_facture,M_PRODUCT_CATEGORY|M_PRODUCT,M_PRODUCT.M_PRODUCT_CATEGORY_ID -> M_PRODUCT_CATEGORY.M_PRODUCT_CATEGORY_ID,Product family.
+theme,fr,theme_article,business_dimension,ca_facture,M_PRODUCT_THEME|M_PRODUCT,M_PRODUCT.M_PRODUCT_THEME_ID -> M_PRODUCT_THEME.M_PRODUCT_THEME_ID,Product enrichment.
+collection,fr,collection_article,business_dimension,ca_facture,M_PRODUCT_COLLECTION|M_PRODUCT,M_PRODUCT.M_PRODUCT_COLLECTION_ID -> M_PRODUCT_COLLECTION.M_PRODUCT_COLLECTION_ID,Product enrichment.
+fournisseur,fr,fournisseur,business_dimension,ca_facture,V_PRODUCT_PRIMARY_SUPPLIER|M_PRODUCT_PO|C_BPARTNER_VENDOR,Fact lines -> M_PRODUCT -> V_PRODUCT_PRIMARY_SUPPLIER,Use V_PRODUCT_PRIMARY_SUPPLIER to avoid duplicated CA.
+vendor,en,fournisseur,business_dimension,ca_facture,V_PRODUCT_PRIMARY_SUPPLIER|M_PRODUCT_PO|C_BPARTNER_VENDOR,Product -> supplier view,English supplier synonym.
+editeur,fr,editeur,business_dimension,ca_facture,C_BPARTNER|M_PRODUCT|C_ORDERLINE,Use explicit product/editor columns only if present in runtime metadata,ERP may store editor labels on product or line extracts.
+distributeur,fr,distributeur,business_dimension,ca_facture,C_BPARTNER|M_PRODUCT|C_ORDERLINE,Use explicit distributor columns only if present,Validate columns before querying.
+type de commande,fr,type_commande,business_dimension,nombre_commandes,C_DOCTYPE|C_ORDER,C_ORDER.C_DOCTYPETARGET_ID -> C_DOCTYPE.C_DOCTYPE_ID,Use document type names for Commande standard Depot Marche Vente Comptoir.
+statut commande,fr,statut_commande,business_dimension,nombre_commandes,C_ORDER,C_ORDER.DOCSTATUS,Order lifecycle status.
+livraison,fr,livraison,business_object,nombre_livraisons,M_INOUT|M_INOUTLINE,M_INOUT.M_INOUT_ID -> M_INOUTLINE.M_INOUT_ID,Shipment/delivery.
+expedition,fr,livraison,business_object,nombre_livraisons,M_INOUT|M_INOUTLINE,M_INOUT.M_INOUT_ID -> M_INOUTLINE.M_INOUT_ID,Delivery synonym.
+stock,fr,stock,business_object,stock_disponible,RV_STORAGE|M_PRODUCT,RV_STORAGE.M_PRODUCT_ID -> M_PRODUCT.M_PRODUCT_ID,Use RV_STORAGE for availability.
+rupture,fr,risque_rupture,metric_alias,produits_stock_risque,RV_STORAGE|M_PRODUCT,RV_STORAGE.QTYAVAILABLE <= 0,Stockout risk.
+stock disponible,fr,stock_disponible,metric_alias,stock_disponible,RV_STORAGE,RV_STORAGE.QTYAVAILABLE,Available quantity after reservations.
+paiement,fr,paiement,business_object,montant_paiements,C_PAYMENT|C_ALLOCATIONLINE,C_PAYMENT.C_PAYMENT_ID -> C_ALLOCATIONLINE.C_PAYMENT_ID,Use allocations to link payments to invoices.
+encaissement,fr,paiement,business_object,montant_paiements,C_PAYMENT|C_ALLOCATIONLINE,C_PAYMENT.C_PAYMENT_ID -> C_ALLOCATIONLINE.C_PAYMENT_ID,Customer receipt/payment.
+lettrage,fr,allocation_paiement,business_object,montant_alloue,C_ALLOCATIONLINE|C_ALLOCATIONHDR,C_ALLOCATIONLINE.C_ALLOCATIONHDR_ID -> C_ALLOCATIONHDR.C_ALLOCATIONHDR_ID,Payment allocation bridge.
+couverture facturation,fr,couverture_facturation,metric_alias,couverture_facturation,C_ORDERLINE|C_INVOICELINE,C_ORDERLINE.C_ORDERLINE_ID -> C_INVOICELINE.C_ORDERLINE_ID,Invoiced versus ordered.
+delai livraison,fr,delai_commande_livraison,metric_alias,delai_commande_livraison,C_ORDER|M_INOUT,C_ORDER.C_ORDER_ID -> M_INOUT.C_ORDER_ID,Average days between order and delivery.
+mois,fr,periode,business_dimension,,C_ORDER|C_INVOICE|M_INOUT,Use DATEORDERED DATEINVOICED or MOVEMENTDATE depending metric,Always choose the metric date field.
+periode,fr,periode,business_dimension,,C_ORDER|C_INVOICE|M_INOUT|C_PAYMENT,Use business date from metric definition,Ask clarification if period is ambiguous and no default exists.

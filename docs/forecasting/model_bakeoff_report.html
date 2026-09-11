@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LPN AI-BI — Model Bake-off · Comparaison des modèles</title>
+<style>
+  :root{
+    --paper:#ffffff; --canvas:#f5f3ec; --ink:#1d2129; --ink2:#3c4453; --muted:#7c8294;
+    --line:#e8e2d5; --line2:#f0ece2;
+    --gold:#bd9742; --gold-soft:#f4ead0; --gold-line:#e7d6a8;
+    --emerald:#1f7a55; --emerald-soft:#e9f3ec; --emerald-line:#cfe6d6;
+    --rose:#b1453e; --rose-soft:#f8eae8; --rose-line:#eccfcb;
+    --slate:#1f2430;
+    --serif:"Iowan Old Style","Palatino Linotype","Palatino","Georgia",serif;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--canvas);color:var(--ink);line-height:1.62;-webkit-font-smoothing:antialiased;padding:40px 20px 80px}
+  .sheet{max-width:980px;margin:0 auto;background:var(--paper);border:1px solid var(--line);
+    border-radius:6px;box-shadow:0 30px 80px -40px rgba(40,35,20,.35);overflow:hidden}
+  .pad{padding:52px 56px}
+  @media(max-width:680px){.pad{padding:34px 24px}}
+
+  /* HEADER */
+  .doc-head{text-align:center;border-bottom:1px solid var(--line);padding-bottom:30px}
+  .tag{display:inline-block;background:var(--slate);color:#fff;font-size:10.5px;font-weight:700;
+    letter-spacing:2.6px;padding:6px 16px;border-radius:3px;text-transform:uppercase}
+  h1{font-family:var(--serif);font-size:38px;font-weight:600;letter-spacing:.3px;margin:20px 0 12px;line-height:1.1}
+  .sub{color:var(--muted);font-size:15px;max-width:600px;margin:0 auto}
+  .sub b{color:var(--ink2)}
+
+  /* PROTOCOL STRIP */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:5px;overflow:hidden;margin:32px 0 8px}
+  .strip .c{padding:16px 18px;border-right:1px solid var(--line2);text-align:center}
+  .strip .c:last-child{border-right:none}
+  .strip .c b{display:block;font-family:var(--serif);font-size:22px;color:var(--gold);line-height:1.1}
+  .strip .c span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  @media(max-width:680px){.strip{grid-template-columns:1fr 1fr}.strip .c{border-bottom:1px solid var(--line2)}}
+
+  h2{font-family:var(--serif);font-size:25px;font-weight:600;margin:46px 0 6px;letter-spacing:.2px}
+  h2 .n{color:var(--gold);font-size:15px;vertical-align:super;margin-right:8px;font-family:var(--sans);font-weight:700}
+  .intro{color:var(--ink2);font-size:15px;margin-bottom:20px;max-width:760px}
+
+  /* TABLE */
+  .tbl-wrap{border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 12px 30px -22px rgba(40,35,20,.4)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  thead th{background:linear-gradient(180deg,#cdab57,#bd9742);color:#332600;
+    font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:11px;padding:13px 14px;text-align:left;border-bottom:2px solid var(--gold-line)}
+  thead th.num{text-align:right}
+  tbody td{padding:14px;border-bottom:1px solid var(--line2);vertical-align:middle}
+  tbody td.num{text-align:right;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:#fbfaf6}
+  .model-name{font-weight:700;color:var(--ink);font-size:14px}
+  .model-type{font-size:11.5px;color:var(--muted)}
+  .rank{font-family:var(--serif);font-size:20px;color:var(--muted);width:34px;text-align:center}
+  tr.win{background:var(--emerald-soft)!important}
+  tr.win .rank{color:var(--emerald)}
+  tr.win .model-name::after{content:"  🏆";font-size:14px}
+  .big{font-family:var(--serif);font-size:17px;font-weight:600}
+  tr.win .big{color:var(--emerald)}
+  .fail .big{color:var(--rose)}
+  .dim{color:#aeb3c0}
+
+  .st{display:inline-block;font-size:11px;font-weight:700;padding:4px 11px;border-radius:99px;white-space:nowrap;letter-spacing:.2px}
+  .st.win{background:var(--emerald);color:#fff}
+  .st.ok{background:var(--gold-soft);color:#7a5e16;border:1px solid var(--gold-line)}
+  .st.bad{background:var(--rose-soft);color:var(--rose);border:1px solid var(--rose-line)}
+
+  .note{font-size:12px;color:var(--muted);margin-top:10px;font-style:italic}
+
+  /* LEGEND */
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:14px 30px;margin-top:24px;background:#fbfaf5;border:1px solid var(--line);border-radius:6px;padding:20px 24px}
+  .legend .it{font-size:13px}
+  .legend .it b{font-family:var(--serif);font-size:15px;color:var(--gold);display:block}
+  .legend .it span{color:var(--ink2)}
+  @media(max-width:680px){.legend{grid-template-columns:1fr}}
+
+  /* BARS */
+  .bars{margin-top:8px}
+  .barrow{display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px;margin-bottom:16px}
+  .barrow .lab{font-size:13px;font-weight:600;text-align:right;color:var(--ink2)}
+  .track{position:relative;height:34px;background:#f3f0e8;border-radius:5px;overflow:hidden}
+  .fill{position:absolute;top:0;left:0;height:100%;width:0;border-radius:5px;transition:width 1.1s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:flex-end;padding-right:12px;color:#fff;font-size:12.5px;font-weight:700}
+  .fill.split{background:linear-gradient(90deg,#cdab57,#bd9742)}
+  .fill.cv{background:linear-gradient(90deg,#3a4150,#1f2430);height:14px;top:auto;bottom:0;opacity:.92}
+  .barlegend{display:flex;gap:22px;font-size:12px;color:var(--muted);margin:4px 0 22px 156px}
+  .barlegend i{display:inline-block;width:14px;height:10px;border-radius:2px;vertical-align:middle;margin-right:6px}
+
+  /* CARDS */
+  .insight{border-left:3px solid var(--gold);background:#fbfaf5;padding:16px 22px;border-radius:0 6px 6px 0;margin-bottom:14px}
+  .insight b{font-family:var(--serif);font-size:16px}
+  .insight p{color:var(--ink2);font-size:14px;margin-top:4px}
+  .insight.win{border-color:var(--emerald);background:var(--emerald-soft)}
+  .insight.bad{border-color:var(--rose);background:var(--rose-soft)}
+
+  .decision{border:1px solid var(--gold-line);background:linear-gradient(180deg,#fffdf7,#fbf6ea);border-radius:8px;padding:26px 28px;margin-top:14px}
+  .decision h3{font-family:var(--serif);font-size:20px;margin-bottom:8px}
+  .decision p{color:var(--ink2);font-size:14.5px}
+  .decision ul{list-style:none;margin-top:12px}
+  .decision li{position:relative;padding-left:24px;margin-bottom:7px;font-size:14px;color:var(--ink2)}
+  .decision li::before{content:"›";position:absolute;left:6px;color:var(--gold);font-weight:800;font-size:16px}
+
+  .next{display:flex;gap:18px;align-items:flex-start;border:1px dashed var(--line);border-radius:8px;padding:22px 24px;margin-top:14px;background:#fcfbf8}
+  .next .ic{font-size:26px}
+  .next b{font-family:var(--serif);font-size:18px}
+  .next p{color:var(--ink2);font-size:14px;margin-top:3px}
+  .pillrow{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .pill{font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:99px;background:#f1ede3;color:var(--ink2);border:1px solid var(--line)}
+
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:46px;padding-top:24px;border-top:1px solid var(--line)}
+  .reveal{opacity:0;transform:translateY(18px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="sheet"><div class="pad">
+
+  <div class="doc-head">
+    <span class="tag">Machine Learning · Banc d'essai</span>
+    <h1>Comparaison des modèles de prévision</h1>
+    <p class="sub">Cinq modèles entraînés dans des conditions <b>identiques</b> sur le CA mensuel de LPN, puis départagés par l'erreur mesurée. Le but : choisir le modèle par les <b>chiffres</b>, pas par réputation.</p>
+  </div>
+
+  <div class="strip reveal">
+    <div class="c"><b>70 / 30</b><span>Découpage chronologique</span></div>
+    <div class="c"><b>17 → 7</b><span>Mois entraînés → testés</span></div>
+    <div class="c"><b>Nov 25 – Mai 26</b><span>Période de test (jamais vue)</span></div>
+    <div class="c"><b>4 plis</b><span>Validation croisée glissante</span></div>
+  </div>
+  <p class="note">Découpage <b>chronologique</b> (jamais aléatoire) : on entraîne sur le passé ancien, on teste sur les mois récents que le modèle n'a jamais vus — comme un examen blanc dont on connaît déjà les réponses.</p>
+
+  <!-- TABLE -->
+  <h2 class="reveal"><span class="n">01</span>Le classement</h2>
+  <p class="intro reveal">Métrique de référence : la <b>WAPE</b> (erreur absolue pondérée) — <b>plus bas = meilleur</b>. Montants en dirhams (MAD).</p>
+  <div class="tbl-wrap reveal">
+  <table>
+    <thead><tr>
+      <th>#</th><th>Modèle</th>
+      <th class="num">WAPE</th><th class="num">MAE</th><th class="num">RMSE</th>
+      <th class="num">MAPE</th><th class="num">WAPE (CV)</th><th>Statut</th>
+    </tr></thead>
+    <tbody>
+      <tr class="win">
+        <td class="rank">1</td>
+        <td><div class="model-name">Seasonal-naive</div><div class="model-type">Statistique · référence (lag-12)</div></td>
+        <td class="num big">21,6 %</td><td class="num">0,95 M</td><td class="num">1,17 M</td>
+        <td class="num">24,1 %</td><td class="num">22,9 %</td>
+        <td><span class="st win">Gagnant</span></td>
+      </tr>
+      <tr>
+        <td class="rank">2</td>
+        <td><div class="model-name">ETS / Holt-Winters</div><div class="model-type">Lissage exponentiel · saison. multiplicative</div></td>
+        <td class="num big">21,6 %</td><td class="num">0,95 M</td><td class="num">1,17 M</td>
+        <td class="num">24,1 %</td><td class="num">22,9 %</td>
+        <td><span class="st ok">≈ Identique au naïf</span></td>
+      </tr>
+      <tr>
+        <td class="rank">3</td>
+        <td><div class="model-name">Prophet (tuned)</div><div class="model-type">GAM · Fourier 5, multiplicatif</div></td>
+        <td class="num big">23,2 %</td><td class="num">1,02 M</td><td class="num">1,23 M</td>
+        <td class="num">24,4 %</td><td class="num" style="color:var(--rose);font-weight:700">43,5 %</td>
+        <td><span class="st ok">Proche · instable en CV</span></td>
+      </tr>
+      <tr class="fail">
+        <td class="rank">4</td>
+        <td><div class="model-name">SARIMA</div><div class="model-type">Statistique · (1,1,1)(1,1,0,12)</div></td>
+        <td class="num big">✗ explosé</td><td class="num dim">—</td><td class="num dim">—</td>
+        <td class="num dim">—</td><td class="num">35,8 %</td>
+        <td><span class="st bad">Instable · trop peu de cycles</span></td>
+      </tr>
+      <tr class="fail">
+        <td class="rank">5</td>
+        <td><div class="model-name">LightGBM</div><div class="model-type">ML · arbres + lags (lag-1, lag-12)</div></td>
+        <td class="num big">NaN</td><td class="num dim">—</td><td class="num dim">—</td>
+        <td class="num dim">—</td><td class="num dim">—</td>
+        <td><span class="st bad">Données insuffisantes</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">WAPE = la WAPE du test 70/30 · WAPE (CV) = moyenne sur les 4 plis de validation croisée glissante. SARIMA a produit des valeurs numériquement aberrantes (≈ 10⁸) sur 17 points ; LightGBM ne disposait que de ≈ 5 lignes d'entraînement après création des décalages → impossible d'apprendre.</p>
+
+  <!-- LEGEND -->
+  <h2 class="reveal"><span class="n">02</span>Lire les métriques</h2>
+  <div class="legend reveal">
+    <div class="it"><b>WAPE</b><span>Erreur absolue totale ÷ ventes totales. <b>Notre référence</b> : robuste quand les mois vont de 2M à 49M.</span></div>
+    <div class="it"><b>MAE</b><span>Erreur moyenne en dirhams. Combien on se trompe « en moyenne » par mois.</span></div>
+    <div class="it"><b>RMSE</b><span>Comme MAE mais pénalise fort les grosses erreurs. Sensible aux pics ratés.</span></div>
+    <div class="it"><b>MAPE</b><span>Erreur en %. Pratique mais gonflée par les petits mois — informatif seulement.</span></div>
+  </div>
+
+  <!-- BARS -->
+  <h2 class="reveal"><span class="n">03</span>Test vs validation croisée</h2>
+  <p class="intro reveal">Les trois modèles « sains » sont très proches sur le test simple — mais la validation croisée révèle la <b>stabilité</b> réelle. Prophet décroche fortement en CV : il sur-ajuste sa tendance sur des fenêtres courtes.</p>
+  <div class="bars reveal">
+    <div class="barlegend"><span><i class="fill split" style="position:static;display:inline-block"></i>WAPE test 70/30</span><span><i style="background:#1f2430"></i>WAPE validation croisée (4 plis)</span></div>
+    <div class="barrow"><div class="lab">Seasonal-naive</div><div class="track"><div class="fill split" data-w="21.6" style="height:20px">21,6 %</div><div class="fill cv" data-w="22.9"></div></div></div>
+    <div class="barrow"><div class="lab">ETS</div><div class="track"><div class="fill split" data-w="21.6" style="height:20px">21,6 %</div><div class="fill cv" data-w="22.9"></div></div></div>
+    <div class="barrow"><div class="lab">Prophet</div><div class="track"><div class="fill split" data-w="23.2" style="height:20px">23,2 %</div><div class="fill cv" data-w="43.5"></div></div></div>
+  </div>
+  <p class="note">Échelle 0–50 %. Barre dorée = test simple ; barre sombre = moyenne en validation croisée. Prophet : 23,2 % → 43,5 % (instable). Naïf &amp; ETS restent stables (~22–23 %).</p>
+
+  <!-- INTERPRETATION -->
+  <h2 class="reveal"><span class="n">04</span>Ce que les résultats veulent dire</h2>
+  <div class="reveal">
+    <div class="insight win">
+      <b>🏆 Le plus simple gagne — et c'est attendu.</b>
+      <p>Sur 24 mois fortement saisonniers, « refaire le même mois que l'an dernier » (naïf saisonnier) est le plus précis (WAPE 21,6 %). Plus le signal est calendaire et l'historique court, plus le simple domine.</p>
+    </div>
+    <div class="insight">
+      <b>≈ ETS s'est effondré sur le naïf.</b>
+      <p>Avec seulement ~1,4 cycle d'entraînement, le lissage exponentiel n'avait rien de plus à apprendre : il a reproduit les valeurs de l'an dernier — d'où des chiffres <b>identiques</b> au naïf. Légitime, mais révélateur du manque d'historique.</p>
+    </div>
+    <div class="insight">
+      <b>Prophet : compétitif mais moins stable.</b>
+      <p>À 1,6 point du gagnant sur le test simple (23,2 %), mais sa WAPE double en validation croisée (43,5 %). Sur de petites fenêtres, sa composante de tendance sur-réagit.</p>
+    </div>
+    <div class="insight bad">
+      <b>✗ SARIMA &amp; LightGBM ont échoué — la bonne nouvelle.</b>
+      <p>Les modèles complexes ont besoin de bien plus de données : SARIMA a explosé numériquement, LightGBM n'a pas pu s'entraîner. Le <b>démontrer</b> prouve qu'on adapte la complexité du modèle à la taille des données — un argument fort en soutenance.</p>
+    </div>
+  </div>
+
+  <!-- DECISION -->
+  <h2 class="reveal"><span class="n">05</span>Décision pour la production</h2>
+  <div class="decision reveal">
+    <h3>On garde Prophet + naïf (mélange) en production — malgré la victoire du naïf.</h3>
+    <p>Le naïf gagne en <b>précision pure</b>, mais il est inutilisable comme produit. Le mélange Prophet+naïf paie 1,6 point d'écart pour des capacités que le naïf n'a pas :</p>
+    <ul>
+      <li>Il prévoit <b>au-delà de 12 mois</b> (le naïf ne sait que recopier l'an dernier).</li>
+      <li>Il fournit une <b>fourchette de confiance</b> (le naïf n'en donne aucune).</li>
+      <li>Il s'<b>adapte</b> à une hausse/baisse de niveau ou de tendance.</li>
+    </ul>
+    <p style="margin-top:12px">En résumé : <b>le naïf est la référence à battre ; le mélange est le bon outil de production</b> tant que l'historique reste court.</p>
+  </div>
+
+  <!-- NEXT -->
+  <h2 class="reveal"><span class="n">06</span>Ce qu'on a testé, et la suite</h2>
+  <p class="intro reveal">Bilan : phase prévision <b>complète</b> (données → fait mensuel → modèle → backtest → banc d'essai 5 modèles → UI). Le choix du modèle est désormais <b>prouvé</b>, pas affirmé.</p>
+  <div class="next reveal">
+    <div class="ic">🔭</div>
+    <div>
+      <b>Prochaine étape — rejouer le banc d'essai à 36 mois (ML-10)</b>
+      <p>La vraie limite aujourd'hui n'est pas le code, c'est le <b>nombre de cycles</b> (2 seulement). Avec ~3 ans d'historique, ETS, SARIMA et LightGBM auront enfin assez de données pour concourir équitablement — et la saisonnalité de Prophet se stabilisera. C'est le levier n°1 de précision.</p>
+      <div class="pillrow">
+        <span class="pill">+ d'historique (2020–2023)</span>
+        <span class="pill">Calendrier rentrée / Ramadan</span>
+        <span class="pill">Prévision par produit (LightGBM)</span>
+        <span class="pill">Niveau hebdomadaire</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    LPN AI-BI · Model Bake-off (ML-9) · données réelles : CA facturé, juin 2024 → mai 2026 · 24 mois complets.<br>
+    Métriques mesurées sur découpage chronologique 70/30 + validation croisée glissante (4 plis).
+  </div>
+
+</div></div>
+
+<script>
+  // animate bars
+  const fills=document.querySelectorAll(".fill[data-w]");
+  const maxScale=50; // %
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll?.(".fill[data-w]").forEach?.(()=>{});
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+    }
+  }),{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(r=>io.observe(r));
+
+  // bar fill on load
+  setTimeout(()=>{
+    fills.forEach((f,i)=>{
+      const w=parseFloat(f.dataset.w);
+      setTimeout(()=>{ f.style.width=Math.min(100,(w/maxScale)*100)+"%"; }, 200+i*120);
+    });
+  }, 350);
+</script>
+</body>
+</html>

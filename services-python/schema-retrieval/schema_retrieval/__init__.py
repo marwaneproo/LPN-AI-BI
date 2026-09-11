@@ -1,0 +1,1 @@
+"""Schema retrieval service package."""

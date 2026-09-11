@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LPN AI-BI — Project Breakdown &amp; Onboarding Guide</title>
+<style>
+  :root {
+    --bg:              #f4f9ff;
+    --bg-soft:         #eaf3fe;
+    --surface:         #ffffff;
+    --surface-2:       #f7fbff;
+    --border:          #dce8f7;
+    --border-strong:   #c3dbf4;
+    --text:            #1e2c3a;
+    --text-soft:       #4a5c6f;
+    --text-muted:      #7c8da0;
+    --primary:         #2f7ff0;
+    --primary-dark:    #1f5fc0;
+    --primary-soft:    #e5f0ff;
+    --accent:          #38b6ff;
+    --good:            #17a673;
+    --good-soft:       #e2f7ef;
+    --warn:            #d9822b;
+    --warn-soft:       #fbeede;
+    --danger:          #d6455b;
+    --danger-soft:     #fbe4e8;
+    --shadow-sm:       0 1px 2px rgba(31,95,192,.06), 0 2px 8px rgba(31,95,192,.05);
+    --shadow-md:       0 6px 24px rgba(31,95,192,.10);
+    --radius:          16px;
+    --radius-sm:       10px;
+    --maxw:            980px;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1100px 520px at 78% -8%, #e0f0ff 0%, rgba(224,240,255,0) 60%),
+      radial-gradient(900px 500px at 8% 4%, #eef6ff 0%, rgba(238,246,255,0) 55%),
+      var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--primary-dark); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---------- top nav ---------- */
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(160%) blur(10px);
+    background: rgba(255,255,255,.82);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav .inner {
+    max-width: var(--maxw); margin: 0 auto;
+    display: flex; align-items: center; gap: 18px;
+    padding: 12px 22px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); }
+  .brand .dot {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    box-shadow: var(--shadow-sm);
+  }
+  .navlinks { display: flex; gap: 4px; flex-wrap: wrap; margin-left: auto; }
+  .navlinks a {
+    font-size: .86rem; color: var(--text-soft);
+    padding: 6px 11px; border-radius: 999px; transition: .18s;
+  }
+  .navlinks a:hover { background: var(--primary-soft); color: var(--primary-dark); text-decoration: none; }
+
+  /* ---------- layout ---------- */
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px 90px; }
+
+  /* ---------- hero ---------- */
+  header.hero {
+    text-align: center;
+    padding: 66px 22px 40px;
+    max-width: var(--maxw); margin: 0 auto;
+  }
+  .eyebrow {
+    display: inline-block; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--primary-dark); background: var(--primary-soft);
+    padding: 6px 14px; border-radius: 999px; font-weight: 600; margin-bottom: 18px;
+  }
+  header.hero h1 {
+    font-size: clamp(1.9rem, 4.6vw, 3.05rem);
+    line-height: 1.12; margin: 0 0 14px; letter-spacing: -.02em;
+    background: linear-gradient(120deg, #123a63 0%, #2f7ff0 60%, #38b6ff 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  header.hero p.lead {
+    font-size: 1.12rem; color: var(--text-soft);
+    max-width: 680px; margin: 0 auto 22px;
+  }
+  .hero-meta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .chip {
+    font-size: .82rem; color: var(--text-soft);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 7px 14px; border-radius: 999px; box-shadow: var(--shadow-sm);
+  }
+  .chip b { color: var(--primary-dark); }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 46px; scroll-margin-top: 88px; }
+  .section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .section-num {
+    flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px;
+    display: grid; place-items: center; font-weight: 700; font-size: 1.15rem;
+    color: #fff; background: linear-gradient(135deg, var(--primary), var(--accent));
+    box-shadow: var(--shadow-sm);
+  }
+  .section-head h2 { font-size: 1.5rem; margin: 0; letter-spacing: -.01em; }
+  .section-head p { margin: 2px 0 0; color: var(--text-muted); font-size: .92rem; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 26px 28px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card + .card { margin-top: 18px; }
+  .card h3 { margin: 0 0 12px; font-size: 1.12rem; color: var(--text); }
+  .card h3:not(:first-child) { margin-top: 22px; }
+  .card p { margin: 0 0 12px; color: var(--text-soft); }
+  .card ul { margin: 0 0 4px; padding-left: 20px; }
+  .card li { margin: 7px 0; color: var(--text-soft); }
+  .card li b, .card p b { color: var(--text); }
+
+  code {
+    font-family: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+    background: var(--bg-soft); color: var(--primary-dark);
+    padding: 1px 6px; border-radius: 6px; font-size: .86em;
+    border: 1px solid var(--border);
+  }
+
+  /* ---------- callouts ---------- */
+  .callout {
+    border-radius: var(--radius-sm); padding: 16px 18px 16px 20px;
+    border: 1px solid var(--border); position: relative; margin: 0 0 14px;
+    background: var(--surface-2);
+  }
+  .callout:last-child { margin-bottom: 0; }
+  .callout.warn { background: var(--warn-soft); border-color: #f0d7b4; }
+  .callout .c-title { font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .callout.warn .c-title { color: #a95d14; }
+  .callout p { margin: 4px 0 0; color: var(--text-soft); font-size: .95rem; }
+
+  /* ---------- pitch highlights ---------- */
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 14px; margin: 4px 0 6px; }
+  .feature {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 16px 16px;
+  }
+  .feature .ico { font-size: 1.4rem; }
+  .feature h4 { margin: 8px 0 6px; font-size: 1rem; }
+  .feature p { margin: 0; font-size: .9rem; color: var(--text-soft); }
+
+  /* ---------- table ---------- */
+  .table-scroll { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; background: var(--surface); min-width: 640px; }
+  thead th {
+    text-align: left; background: var(--primary-soft); color: var(--primary-dark);
+    font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--border-strong);
+    white-space: nowrap;
+  }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text-soft); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:nth-child(even) { background: var(--surface-2); }
+  tbody tr.dim td { color: var(--text-muted); }
+  td .svc { font-weight: 600; color: var(--text); }
+  .strike { text-decoration: line-through; opacity: .6; }
+
+  /* ---------- badges ---------- */
+  .badge {
+    display: inline-block; font-size: .72rem; font-weight: 600;
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .b-java   { background:#e9efff; color:#3b53c4; }
+  .b-py     { background:#eafaf1; color:#1c8a5a; }
+  .b-react  { background:#e6f8fe; color:#1187b0; }
+  .b-db     { background:#f0ecff; color:#6b46c1; }
+  .b-plan   { background:#f1f3f6; color:#8a97a7; }
+
+  /* ---------- pipeline steps ---------- */
+  .steps { counter-reset: step; margin: 6px 0 0; padding: 0; list-style: none; }
+  .steps li {
+    position: relative; padding: 4px 0 20px 46px; margin: 0;
+  }
+  .steps li:not(:last-child)::before {
+    content: ""; position: absolute; left: 16px; top: 30px; bottom: -4px;
+    width: 2px; background: linear-gradient(var(--border-strong), var(--primary-soft));
+  }
+  .steps li::after {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 2px;
+    width: 33px; height: 33px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--primary);
+    color: var(--primary-dark); font-weight: 700; font-size: .9rem;
+    display: grid; place-items: center; box-shadow: var(--shadow-sm);
+  }
+  .steps li b { color: var(--text); }
+
+  /* ---------- flow diagram ---------- */
+  .flow {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    background: var(--surface-2); border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm); padding: 16px; margin: 4px 0 2px; justify-content: center;
+  }
+  .flow .node {
+    background: var(--surface); border: 1px solid var(--border-strong);
+    padding: 7px 12px; border-radius: 9px; font-size: .84rem; font-weight: 600; color: var(--text);
+    box-shadow: var(--shadow-sm); white-space: nowrap;
+  }
+  .flow .node.llm { border-color:#c9d3ff; background:#f2f5ff; color:#3b53c4; }
+  .flow .node.db  { border-color:#d8ccff; background:#f6f2ff; color:#6b46c1; }
+  .flow .arrow { color: var(--primary); font-weight: 700; font-size: 1.05rem; }
+
+  /* ---------- status lists ---------- */
+  .status-list { list-style: none; padding: 0; margin: 0; }
+  .status-list li { padding: 8px 0 8px 30px; position: relative; color: var(--text-soft); border-bottom: 1px dashed var(--border); }
+  .status-list li:last-child { border-bottom: 0; }
+  .status-list li::before {
+    position: absolute; left: 0; top: 8px; font-weight: 700;
+  }
+  .status-list.done li::before { content: "\2713"; color: var(--good); }
+  .status-list.next li::before { content: "\2192"; color: var(--primary); }
+  .status-list li b { color: var(--text); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ---------- footer ---------- */
+  footer {
+    max-width: var(--maxw); margin: 40px auto 0; padding: 26px 22px 10px;
+    border-top: 1px solid var(--border); color: var(--text-muted); font-size: .86rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="inner">
+    <span class="brand"><span class="dot"></span> LPN&nbsp;AI-BI</span>
+    <div class="navlinks">
+      <a href="#pitch">Pitch</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#pipeline">AI &amp; Data</a>
+      <a href="#state">State &amp; Next</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">Project Breakdown &amp; Onboarding Guide</span>
+  <h1>LPN AI-BI Platform</h1>
+  <p class="lead">A local, self-hosted AI-powered Business Intelligence &amp; predictive-analytics platform over LPN's Oracle/Compiere ERP sales data — natural-language Q&amp;A, governed dashboards, and revenue forecasting.</p>
+  <div class="hero-meta">
+    <span class="chip">Type: <b>PFE / graduation project</b></span>
+    <span class="chip">Defense: <b>2026-07-31</b></span>
+    <span class="chip">Stack: <b>Java · Python · React</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Reality check -->
+  <div class="card" style="border-color:#f0d7b4;">
+    <h3 style="color:#a95d14;">⚠️ Three framing corrections up front</h3>
+    <p>Verified against the actual codebase — a new joiner needs the real map, not the aspirational one:</p>
+    <div class="callout warn">
+      <div class="c-title">“.NET 9 components”</div>
+      <p><code>services-dotnet/gateway</code> and <code>services-dotnet/reporting</code> are <b>empty placeholders</b> (only <code>.gitkeep</code> files); <code>poc-dotnet-archive/</code> is just a README. There is <b>no running .NET service today</b>. The live backend is <b>Java (Spring Boot) + Python (FastAPI)</b>.</p>
+    </div>
+    <div class="callout warn">
+      <div class="c-title">“824 tables”</div>
+      <p>That is the <i>upstream Compiere ERP</i> catalog. What this system actually models is far smaller: ~38 documented entities (<code>docs/schema_metadata.csv</code>), ~18–25 core <code>business</code> tables, plus a purpose-built star-schema warehouse.</p>
+    </div>
+    <div class="callout warn">
+      <div class="c-title">“5 years of historical data”</div>
+      <p>The forecasting data spans <b>~24–25 months</b> (≈ 2024-06 → 2026-06) — two seasonal cycles. Prophet requires ≥12 complete months, which is exactly what makes company-level forecasting viable.</p>
+    </div>
+  </div>
+
+  <!-- 1. PITCH -->
+  <section id="pitch">
+    <div class="section-head">
+      <div class="section-num">1</div>
+      <div><h2>The 1-Minute Pitch</h2><p>Why this exists and what it delivers</p></div>
+    </div>
+    <div class="card">
+      <p>LPN is a <b>book / school-supply distributor</b> running an <b>Oracle/Compiere ERP</b>. Getting business answers out of it today means manual reports. This project replaces that with a <b>local, self-hosted analytics platform</b> that does three things over the same sales data:</p>
+      <div class="feature-grid">
+        <div class="feature">
+          <div class="ico">💬</div>
+          <h4>Ask in plain language</h4>
+          <p>French/English question → a local LLM writes SQL → it's validated &amp; safely executed → you get a chart + a written narration. <b>No data leaves the building</b> (Ollama runs locally).</p>
+        </div>
+        <div class="feature">
+          <div class="ico">📊</div>
+          <h4>Governed BI dashboards</h4>
+          <p>Six pre-built, sub-second dashboard pages (Overview, Revenue/CA, Orders, Articles, Clients, Commercial) served from a curated data mart.</p>
+        </div>
+        <div class="feature">
+          <div class="ico">📈</div>
+          <h4>Predictive analytics</h4>
+          <p>A Prophet-based model forecasts monthly <b>chiffre d'affaires (CA)</b> 1–12 months ahead, at company / salesperson / category / theme grain.</p>
+        </div>
+      </div>
+      <p style="margin-top:18px;"><b>Core value:</b> one workflow turns raw ERP exports into (a) ad-hoc Q&amp;A, (b) polished reporting, and (c) forward-looking revenue forecasts — locally, privately, and reproducibly.</p>
+    </div>
+  </section>
+
+  <!-- 2. ARCHITECTURE -->
+  <section id="architecture">
+    <div class="section-head">
+      <div class="section-num">2</div>
+      <div><h2>Architecture &amp; Microservices Map</h2><p>Orchestrated via <code>docker-compose.yml</code>; also runnable natively via <code>start_project.ps1</code></p></div>
+    </div>
+    <div class="card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Service</th><th>Stack</th><th>Port</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="svc">llm-orchestrator</span></td><td><span class="badge b-java">Java · Spring Boot</span></td><td>8081</td><td>The brain — QA (Text-to-SQL) pipeline, BI dashboard APIs, auth, chat history.</td></tr>
+            <tr><td><span class="svc">sql-executor</span></td><td><span class="badge b-java">Java · Spring Boot</span></td><td>8082</td><td>Runs validated SQL as a <b>read-only</b> role; 30s timeout, 10k-row cap.</td></tr>
+            <tr><td><span class="svc">sql-validator</span></td><td><span class="badge b-py">Python · FastAPI</span></td><td>8086</td><td><code>sqlglot</code>-based SQL safety / validation gate.</td></tr>
+            <tr><td><span class="svc">schema-retrieval</span></td><td><span class="badge b-py">Python · FastAPI</span></td><td>8084</td><td>Vector search (Qdrant) over schema metadata → picks relevant tables for a question.</td></tr>
+            <tr><td><span class="svc">predictive</span></td><td><span class="badge b-py">Python · FastAPI</span></td><td>8085</td><td>Prophet CA forecasting, backtest, model bake-off.</td></tr>
+            <tr><td><span class="svc">postgres</span></td><td><span class="badge b-db">Postgres 16</span></td><td>5433</td><td><code>business</code> + <code>app</code> schemas, plus DWH <code>staging</code>/<code>warehouse</code>/<code>mart</code>.</td></tr>
+            <tr><td><span class="svc">qdrant</span></td><td><span class="badge b-db">Qdrant</span></td><td>6333</td><td>Embedding store for schema retrieval.</td></tr>
+            <tr><td><span class="svc">frontend</span></td><td><span class="badge b-react">React · Vite · Recharts</span></td><td>—</td><td>UI: conversation, dashboards, forecasts, admin.</td></tr>
+            <tr><td><span class="svc">Ollama</span> <span style="font-size:.8em;color:var(--text-muted)">(external)</span></td><td><span class="badge b-plan">local LLM</span></td><td>11434</td><td>Serves LLMs — <code>qwen2.5-coder</code> (SQL) + <code>llama3.1</code> (narration).</td></tr>
+            <tr class="dim"><td><span class="svc strike">gateway / reporting</span></td><td><span class="badge b-plan">.NET (planned)</span></td><td>—</td><td><b>Empty placeholders — not implemented.</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How they communicate</h3>
+      <p>All services share a Docker network and talk over <b>HTTP/REST</b>. Frontend → <code>llm-orchestrator</code> (via Vite proxy). The orchestrator fans out to the other services:</p>
+      <div class="flow">
+        <span class="node">Frontend</span><span class="arrow">→</span>
+        <span class="node llm">llm-orchestrator</span><span class="arrow">→</span>
+        <span class="node">schema-retrieval</span><span class="arrow">→</span>
+        <span class="node llm">Ollama (SQL)</span><span class="arrow">→</span>
+        <span class="node">sql-validator</span><span class="arrow">→</span>
+        <span class="node">sql-executor</span><span class="arrow">→</span>
+        <span class="node db">Postgres</span>
+      </div>
+      <p style="margin-top:14px;"><b>BI dashboard pages skip the LLM entirely</b> and read the pre-built mart views directly.</p>
+
+      <div class="callout">
+        <div class="c-title">🔐 Two database roles</div>
+        <p><code>lpn_app_admin</code> — read-write, for auth / chat / telemetry in the <code>app</code> schema. <code>lpn_ai_readonly</code> — SELECT-only on <code>business</code>, used by every analytical path (QA, dashboards, forecasting).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. AI & DATA -->
+  <section id="pipeline">
+    <div class="section-head">
+      <div class="section-num">3</div>
+      <div><h2>AI &amp; Data Pipeline Breakdown</h2><p>Three pipelines: Text-to-SQL, deterministic BI, and forecasting</p></div>
+    </div>
+
+    <div class="card">
+      <h3>3a · Text-to-SQL (the QA pipeline)</h3>
+      <p>Entry point: <code>QaController</code> / <code>QaService</code> in the orchestrator.</p>
+      <ol class="steps">
+        <li><b>Question in</b> — natural language, French or English.</li>
+        <li><b>Schema retrieval</b> — <code>SchemaRetrievalClient</code> → embedding search in Qdrant returns only the <i>relevant</i> subset of tables/columns. This is the scaling trick: the LLM never sees the whole catalog, just the handful of tables a question needs.</li>
+        <li><b>SQL generation</b> — prompt (<code>sql-generation.en.txt</code>) + retrieved schema → local Ollama (<code>qwen2.5-coder:7b</code>, with a 14b reasoning tier).</li>
+        <li><b>Validation</b> — <code>sql-validator</code> (Python/<code>sqlglot</code>) + <code>SemanticSqlValidator</code> in Java. Anything non-SELECT / unsafe is rejected.</li>
+        <li><b>Execution</b> — <code>sql-executor</code> runs it as <code>lpn_ai_readonly</code>, <code>search_path=business</code>, with 30s / 10k-row guards.</li>
+        <li><b>Narration</b> — <code>AnswerNarrationService</code> sends results back to Ollama (<code>llama3.1</code>) for a human-readable answer.</li>
+      </ol>
+      <p style="margin-top:6px;">Every step is timed into <code>app.ai_request_performance_trace</code>; chat history persists per user.</p>
+    </div>
+
+    <div class="card">
+      <h3>3b · BI dashboards (deterministic — no LLM)</h3>
+      <p>The <code>bi/</code> package (7 controllers: Overview, Revenue, Orders, Articles, Clients, Commercial + Export) reads <b>pre-materialized <code>mart</code> serving views</b> through dedicated <code>*MartRepository</code> classes → sub-second responses. This is fed by the data-warehouse pipeline:</p>
+      <div class="flow">
+        <span class="node">ERP flat-file exports</span><span class="arrow">→</span>
+        <span class="node db">staging</span><span class="arrow">→</span>
+        <span class="node db">warehouse (dims + facts)</span><span class="arrow">→</span>
+        <span class="node db">mart (serving views)</span><span class="arrow">→</span>
+        <span class="node">BI pages</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3c · Predictive / CA forecasting</h3>
+      <p>Service: <code>services-python/predictive</code>. <b>Deterministic ML — no LLM, no Excel at request time.</b></p>
+      <ul>
+        <li><b>Data flow:</b> reads <code>business.fact_sales_monthly*</code> tables (company / commercial / category / theme grain) as <code>lpn_ai_readonly</code>. Partial months (<code>is_partial=TRUE</code>) are excluded before fitting.</li>
+        <li><b>Model:</b> Prophet (<code>yearly_fourier_order=5</code>, <code>cps=0.05</code>, multiplicative seasonality) <b>blended 50/50 with a naive lag-12 baseline</b> — the blend beat naive on WAPE (0.222 vs 0.238). Models are cached in-memory per grain/key.</li>
+        <li><b>Guardrails:</b> requires ≥12 complete months or returns <code>insufficient_history</code>; CA is clamped ≥ 0.</li>
+        <li><b>Endpoints:</b> <code>/v1/forecast/ca</code>, <code>/v1/forecast/options</code>, <code>/v1/forecast/backtest</code> (hold-out WAPE/MAE/RMSE), <code>/v1/forecast/bakeoff</code> (compares 5 models: seasonal-naive, ETS, SARIMA, tuned Prophet, LightGBM).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. STATE -->
+  <section id="state">
+    <div class="section-head">
+      <div class="section-num">4</div>
+      <div><h2>Current State &amp; Next Steps</h2><p>What works today, where recent work landed, and what's ripe to pick up</p></div>
+    </div>
+
+    <div class="card">
+      <h3>✅ Working today</h3>
+      <ul class="status-list done">
+        <li>Full <b>Text-to-SQL QA</b> pipeline (retrieve → generate → validate → execute → narrate) with telemetry &amp; per-user chat history.</li>
+        <li><b>Six BI dashboard pages</b> wired to materialized mart views (sub-second), with date-range filtering and <b>year-over-year comparison KPI cards</b> (the newest work).</li>
+        <li><b>Data warehouse</b> built end-to-end: staging loader, 2024 + 2025-2026 windows loaded, dimensions + order/invoice/delivery/payment/stock facts, cross-window dedup, reconciliation / data-quality gate, mart serving views.</li>
+        <li><b>Predictive service</b> fully implemented (Prophet + naive blend, backtest, 5-model bake-off) — a big step up from the earlier <code>/health</code> stub.</li>
+        <li>Auth (PBKDF2) and export to PNG / PDF / XLSX.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>📍 Where recent commits landed</h3>
+      <p>The last ~20 commits are almost entirely <code>feat(dwh)</code> (building the warehouse / mart) and <code>feat(bi)</code> / <code>style(bi)</code> (the BI pages, Recharts visuals, date filter, YoY comparison cards). Current branch: <code>bi-polished-dashboard</code>. The active frontier is <b>BI dashboard polish</b>.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚀 Ripe for a new developer</h3>
+      <ul class="status-list next">
+        <li>The <b>.NET 9 gateway &amp; reporting services</b> — greenfield placeholders. A natural intern project: build the API gateway and/or a proper reporting service (today's export is frontend-driven).</li>
+        <li><b>Forecasting UI</b> — wire <code>ForecastsPage</code> fully to the now-live <code>/v1/forecast/*</code> endpoints (confirm it's no longer a mock).</li>
+        <li><b>Finish the DWH roadmap</b> — resolve the flagged KNOWN GAP (C_TAX / AD_ORG / M_LOCATOR / CUSTOMER_PORTFOLIO have no staging table) and per-file CSV delimiter handling.</li>
+        <li><b>Schema-retrieval quality</b> — currently a <code>hash</code> embedding backend; swapping in the real multilingual model would improve Text-to-SQL table selection.</li>
+        <li><b>Data depth</b> — only ~24 months of history limits forecast horizon/confidence; more history (or finer grains) is the main accuracy lever.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span>LPN AI-BI — onboarding guide · generated from the live codebase</span>
+  <span>Java · Python · React · PostgreSQL · Ollama · Qdrant</span>
+</footer>
+
+</body>
+</html>

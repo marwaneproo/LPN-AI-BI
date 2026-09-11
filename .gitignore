@@ -1,0 +1,140 @@
+# ─── Secrets & local config ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ─── Node / Frontend ────────────────────────────────────────────
+node_modules/
+dist/
+dist-electron/
+build/
+.vite/
+.next/
+coverage/
+*.log
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ─── Java / Gradle / Spring Boot ────────────────────────────────
+.gradle/
+build/
+!**/src/**/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+out/
+bin/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+!**/gradle/wrapper/gradle-wrapper.jar
+hs_err_pid*
+replay_pid*
+
+# ─── .NET ───────────────────────────────────────────────────────
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+artifacts/
+TestResults/
+*.nupkg
+
+# ─── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+*.egg-info/
+.uv/
+
+# ─── IDE / Editor ───────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── Docker / Infra runtime data ────────────────────────────────
+pgdata/
+qdrant_data/
+ollama_data/
+grafana_data/
+prometheus_data/
+
+# ─── ML / Data artifacts ────────────────────────────────────────
+*.joblib
+*.pkl
+*.onnx
+*.gguf
+*.bin
+models/
+checkpoints/
+
+# ─── Compiere snapshot exports (raw data — never commit) ────────
+docs/exports/*.zip
+docs/exports/*.csv
+docs/exports/*.xlsx
+docs/exports/*.sql
+local-snapshots/
+!docs/exports/schema.template.sql
+!docs/exports/manifest.template.json
+!docs/exports/README.md
+!docs/exports/queries/
+Youssef_Extractions/
+
+# ─── Reports / generated output ─────────────────────────────────
+reports/
+*.tmp
+Rapport_PFE/
+
+# ─── Local launcher runtime logs ────────────────────────────────
+logs/
+
+# ─── Local-native dev (embedded Qdrant store, DB dumps) ─────────
+.local/
+backups/
+
+# ─── Personal / private (never commit) ──────────────────────────
+cv_lettre_de_motivation/
+.claude/settings.local.json
+
+# ─── Not for the interns branch (personal tooling, AI session logs,
+#     legacy demos/POCs, and any real LPN data extracts) ──────────
+.claude/
+.agents/
+skills-lock.json
+claude_code_context/
+docs/bi-redesign/
+docs/CONTEXT_JOURNAL.md
+docs/FRONTEND_SIDEBAR_CONTEXT.md
+demo_metabase_webpage/
+superset-docker/
+lpn-telemetry-studio/
+model-testing/
+poc-dotnet-archive/
+frontend_exemple_OpenWebui/
+debug/
+DataWareHouse/processus_de_vente/etl/output/
+*.pbix

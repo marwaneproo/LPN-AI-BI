@@ -1,0 +1,232 @@
+version: 1
+domain: processus_de_vente
+owner: LPN AI-BI
+last_updated: 2026-06-04
+currency: MAD
+
+metrics:
+  - name: ca_commande
+    label_fr: CA commande
+    label_en: Ordered revenue
+    source_table: C_ORDER
+    supporting_tables: [C_ORDERLINE]
+    formula: SUM(C_ORDER.GRANDTOTAL)
+    alternative_formula: SUM(C_ORDERLINE.LINENETAMT) for product or line grain
+    date_field: C_ORDER.DATEORDERED
+    grain: order header
+    default_filters: C_ORDER.ISSOTRX = 'Y'
+    caveats: Header totals include tax context while line net amount is better for product splits.
+
+  - name: ca_facture
+    label_fr: CA facture
+    label_en: Invoiced revenue
+    source_table: C_INVOICE
+    supporting_tables: [C_INVOICELINE]
+    formula: SUM(C_INVOICE.GRANDTOTAL)
+    alternative_formula: SUM(C_INVOICELINE.LINENETAMT) for product category supplier or article detail
+    date_field: C_INVOICE.DATEINVOICED
+    grain: invoice header
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: Do not use C_INVOICE.INVOICEAMT because it is not in the imported schema.
+
+  - name: nombre_commandes
+    label_fr: Nombre de commandes
+    label_en: Order count
+    source_table: C_ORDER
+    supporting_tables: [C_DOCTYPE, C_BPARTNER, V_SALESREP_USER]
+    formula: COUNT(DISTINCT C_ORDER.C_ORDER_ID)
+    date_field: C_ORDER.DATEORDERED
+    grain: order header
+    default_filters: C_ORDER.ISSOTRX = 'Y'
+    caveats: Use C_DOCTYPE for readable type de commande labels.
+
+  - name: nombre_clients_actifs
+    label_fr: Clients actifs
+    label_en: Active customers
+    source_table: C_ORDER
+    supporting_tables: [C_BPARTNER, C_INVOICE]
+    formula: COUNT(DISTINCT C_ORDER.C_BPARTNER_ID)
+    date_field: C_ORDER.DATEORDERED
+    grain: customer over selected period
+    default_filters: C_ORDER.ISSOTRX = 'Y'
+    caveats: If user asks invoiced active clients use C_INVOICE.C_BPARTNER_ID instead.
+
+  - name: nombre_produits_vendus
+    label_fr: Produits vendus
+    label_en: Sold products
+    source_table: C_INVOICELINE
+    supporting_tables: [M_PRODUCT, C_ORDERLINE]
+    formula: COUNT(DISTINCT C_INVOICELINE.M_PRODUCT_ID)
+    date_field: C_INVOICE.DATEINVOICED through C_INVOICELINE -> C_INVOICE
+    grain: product over selected period
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: For ordered products use C_ORDERLINE.M_PRODUCT_ID and C_ORDER.DATEORDERED.
+
+  - name: factures_payees
+    label_fr: Factures payees
+    label_en: Paid invoices
+    source_table: C_INVOICE
+    supporting_tables: [C_BPARTNER]
+    formula: COUNT(DISTINCT C_INVOICE.C_INVOICE_ID) WHERE C_INVOICE.ISPAID = 'Y'
+    date_field: C_INVOICE.DATEINVOICED
+    grain: invoice header
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: Payment allocation detail requires C_ALLOCATIONLINE and C_PAYMENT.
+
+  - name: factures_impayees
+    label_fr: Factures impayees
+    label_en: Unpaid invoices
+    source_table: C_INVOICE
+    supporting_tables: [C_BPARTNER, V_SALESREP_USER]
+    formula: COUNT(DISTINCT C_INVOICE.C_INVOICE_ID) WHERE C_INVOICE.ISPAID = 'N'
+    amount_formula: SUM(C_INVOICE.GRANDTOTAL) WHERE C_INVOICE.ISPAID = 'N'
+    date_field: C_INVOICE.DATEINVOICED
+    grain: invoice header
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: Use GRANDTOTAL for unpaid exposure and ISPAID for paid/unpaid status.
+
+  - name: couverture_facturation
+    label_fr: Couverture facturation
+    label_en: Invoice coverage
+    source_table: C_ORDERLINE
+    supporting_tables: [C_INVOICELINE]
+    formula: SUM(C_ORDERLINE.QTYINVOICED) / NULLIF(SUM(C_ORDERLINE.QTYORDERED), 0)
+    amount_formula: SUM(C_INVOICELINE.LINENETAMT) / NULLIF(SUM(C_ORDERLINE.LINENETAMT), 0)
+    date_field: C_ORDERLINE.CREATED or parent C_ORDER.DATEORDERED depending analysis
+    grain: order line
+    default_filters: none
+    caveats: Quantity coverage and amount coverage answer different questions; choose based on wording.
+
+  - name: top_clients_ca_facture
+    label_fr: Top clients par CA facture
+    label_en: Top customers by invoiced revenue
+    source_table: C_INVOICE
+    supporting_tables: [C_BPARTNER]
+    formula: SUM(C_INVOICE.GRANDTOTAL) GROUP BY C_BPARTNER.NAME
+    date_field: C_INVOICE.DATEINVOICED
+    grain: customer
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: For ordered rankings use C_ORDER.GRANDTOTAL instead.
+
+  - name: top_produits_ca_facture
+    label_fr: Top produits par CA facture
+    label_en: Top products by invoiced revenue
+    source_table: C_INVOICELINE
+    supporting_tables: [C_INVOICE, M_PRODUCT]
+    formula: SUM(C_INVOICELINE.LINENETAMT) GROUP BY M_PRODUCT.NAME
+    date_field: C_INVOICE.DATEINVOICED
+    grain: product
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: Use invoice line grain for product revenue.
+
+  - name: ca_par_commercial
+    label_fr: CA par commercial
+    label_en: Revenue by sales representative
+    source_table: C_ORDER
+    supporting_tables: [V_SALESREP_USER, C_INVOICE]
+    formula: SUM(C_ORDER.GRANDTOTAL) GROUP BY V_SALESREP_USER.SALESREP_NAME
+    invoice_formula: SUM(C_INVOICE.GRANDTOTAL) GROUP BY V_SALESREP_USER.SALESREP_NAME
+    date_field: C_ORDER.DATEORDERED or C_INVOICE.DATEINVOICED depending metric
+    grain: commercial period
+    default_filters: C_ORDER.ISSOTRX = 'Y'
+    caveats: Use V_SALESREP_USER instead of raw AD_USER for labels.
+
+  - name: ca_par_type_commande
+    label_fr: CA par type de commande
+    label_en: Revenue by order type
+    source_table: C_ORDER
+    supporting_tables: [C_DOCTYPE]
+    formula: SUM(C_ORDER.GRANDTOTAL) GROUP BY C_DOCTYPE.NAME
+    date_field: C_ORDER.DATEORDERED
+    grain: document type period
+    default_filters: C_ORDER.ISSOTRX = 'Y'
+    caveats: Join C_ORDER.C_DOCTYPETARGET_ID to C_DOCTYPE.C_DOCTYPE_ID for target order type labels.
+
+  - name: ca_par_type_article
+    label_fr: CA par type d'article
+    label_en: Revenue by article type
+    source_table: C_INVOICELINE
+    supporting_tables: [C_INVOICE, M_PRODUCT, M_PRODUCT_TYPE, M_PRODUCT_CATEGORY]
+    formula: SUM(C_INVOICELINE.LINENETAMT) JOIN M_PRODUCT ON C_INVOICELINE.M_PRODUCT_ID = M_PRODUCT.M_PRODUCT_ID JOIN M_PRODUCT_TYPE ON M_PRODUCT.M_PRODUCT_TYPE_ID::text = M_PRODUCT_TYPE.M_PRODUCT_TYPE_ID GROUP BY M_PRODUCT_TYPE.NAME
+    fallback_formula: SUM(C_INVOICELINE.LINENETAMT) GROUP BY M_PRODUCT_CATEGORY.NAME
+    date_field: C_INVOICE.DATEINVOICED
+    grain: article type period
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: Runtime import has M_PRODUCT_TYPE.M_PRODUCT_TYPE_ID as text and M_PRODUCT.M_PRODUCT_TYPE_ID as bigint; cast M_PRODUCT.M_PRODUCT_TYPE_ID::text when joining. Current dashboard sometimes treats category as type d'article; state that fallback if used.
+
+  - name: ca_par_fournisseur
+    label_fr: CA par fournisseur
+    label_en: Revenue by supplier
+    source_table: C_INVOICELINE
+    supporting_tables: [C_INVOICE, M_PRODUCT, V_PRODUCT_PRIMARY_SUPPLIER]
+    formula: SUM(C_INVOICELINE.LINENETAMT) JOIN V_PRODUCT_PRIMARY_SUPPLIER ON C_INVOICELINE.M_PRODUCT_ID = V_PRODUCT_PRIMARY_SUPPLIER.M_PRODUCT_ID GROUP BY V_PRODUCT_PRIMARY_SUPPLIER.SUPPLIER_NAME
+    date_field: C_INVOICE.DATEINVOICED
+    grain: primary supplier period
+    default_filters: C_INVOICE.ISSOTRX = 'Y'
+    caveats: Use V_PRODUCT_PRIMARY_SUPPLIER to avoid multiplying revenue by all supplier rows in M_PRODUCT_PO. Join supplier revenue directly from C_INVOICELINE.M_PRODUCT_ID to V_PRODUCT_PRIMARY_SUPPLIER.M_PRODUCT_ID; do not route CA through M_INOUTLINE unless the question is about delivery.
+
+  - name: nombre_livraisons
+    label_fr: Nombre de livraisons
+    label_en: Delivery count
+    source_table: M_INOUT
+    supporting_tables: [M_INOUTLINE, C_ORDER, C_BPARTNER]
+    formula: COUNT(DISTINCT M_INOUT.M_INOUT_ID)
+    date_field: M_INOUT.MOVEMENTDATE
+    grain: delivery header
+    default_filters: M_INOUT.ISSOTRX = 'Y'
+    caveats: Delivery line quantities live in M_INOUTLINE.MOVEMENTQTY.
+
+  - name: couverture_livraison
+    label_fr: Couverture livraison
+    label_en: Delivery coverage
+    source_table: C_ORDERLINE
+    supporting_tables: [M_INOUTLINE]
+    formula: SUM(C_ORDERLINE.QTYDELIVERED) / NULLIF(SUM(C_ORDERLINE.QTYORDERED), 0)
+    date_field: parent C_ORDER.DATEORDERED or M_INOUT.MOVEMENTDATE depending question
+    grain: order line
+    default_filters: none
+    caveats: Use order-line delivered quantities for simple coverage; use M_INOUTLINE for shipment-detail questions.
+
+  - name: stock_disponible
+    label_fr: Stock disponible
+    label_en: Available stock
+    source_table: RV_STORAGE
+    supporting_tables: [M_PRODUCT, M_PRODUCT_CATEGORY, M_WAREHOUSE, M_LOCATOR]
+    formula: SUM(RV_STORAGE.QTYAVAILABLE)
+    date_field: RV_STORAGE.DATELASTINVENTORY
+    grain: product warehouse locator snapshot
+    default_filters: none
+    caveats: Stock is a snapshot, not a transaction trend unless multiple snapshots are stored.
+
+  - name: produits_stock_risque
+    label_fr: Produits a risque de rupture
+    label_en: Products at stockout risk
+    source_table: RV_STORAGE
+    supporting_tables: [M_PRODUCT, M_PRODUCT_CATEGORY, C_ORDERLINE]
+    formula: COUNT(DISTINCT RV_STORAGE.M_PRODUCT_ID) WHERE RV_STORAGE.QTYAVAILABLE <= 0
+    date_field: RV_STORAGE.DATELASTINVENTORY
+    grain: product stock snapshot
+    default_filters: none
+    caveats: For business priority join with recent ordered or invoiced quantities.
+
+  - name: montant_paiements
+    label_fr: Montant des paiements
+    label_en: Payment amount
+    source_table: C_PAYMENT
+    supporting_tables: [C_ALLOCATIONLINE, C_BPARTNER]
+    formula: SUM(C_PAYMENT.PAYAMT)
+    date_field: C_PAYMENT.DATETRX
+    grain: payment header
+    default_filters: C_PAYMENT.ISRECEIPT = 'Y'
+    caveats: To connect payments to invoices, always bridge through C_ALLOCATIONLINE.
+
+  - name: montant_alloue
+    label_fr: Montant alloue
+    label_en: Allocated amount
+    source_table: C_ALLOCATIONLINE
+    supporting_tables: [C_ALLOCATIONHDR, C_PAYMENT, C_INVOICE]
+    formula: SUM(C_ALLOCATIONLINE.AMOUNT)
+    date_field: C_ALLOCATIONLINE.DATETRX
+    grain: allocation line
+    default_filters: none
+    caveats: This is the reliable invoice-payment bridge in the current extraction.

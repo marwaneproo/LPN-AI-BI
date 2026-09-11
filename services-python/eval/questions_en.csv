@@ -1,0 +1,31 @@
+id,question_en,expected_tables,expected_kind,expected_row_shape,notes
+Q001,How many orders were placed last month?,C_ORDER,aggregate,single row with an order count,Core smoke test for C_ORDER date filtering.
+Q002,What is the total order amount last month?,C_ORDER,aggregate,single row with a total amount,Uses GRANDTOTAL from order headers.
+Q003,Show the 5 most recent orders.,C_ORDER,lookup,up to five rows with order numbers and dates,Checks basic order lookup.
+Q004,How many orders are completed?,C_ORDER,aggregate,single row with a completed order count,Uses DOCSTATUS.
+Q005,How many draft or in-progress orders do we have?,C_ORDER,aggregate,single row with a count by open status,Status-code aggregate.
+Q006,What is the average order value last month?,C_ORDER,aggregate,single row with an average amount,Numeric aggregate over GRANDTOTAL.
+Q007,List the top 5 orders by total amount.,C_ORDER,lookup,up to five rows with order numbers and totals,Ranking over order headers.
+Q008,How many order lines are in the snapshot?,C_ORDERLINE,aggregate,single row with an order-line count,Line table smoke test.
+Q009,What is the total quantity ordered?,C_ORDERLINE,aggregate,single row with total ordered quantity,Uses QTYORDERED.
+Q010,Show the 5 largest order lines by line net amount.,C_ORDERLINE,lookup,up to five rows with line IDs and line amounts,Ranking over line values.
+Q011,Which products appear in order lines?,C_ORDERLINE|M_PRODUCT,join,rows with product identifiers or names,Join/relation between order lines and product dimension.
+Q012,List 5 products.,M_PRODUCT,lookup,up to five product rows,Product dimension currently has derived placeholder names.
+Q013,How many products are active?,M_PRODUCT,aggregate,single row with active product count,Uses temporary M_PRODUCT.ISACTIVE.
+Q014,Which 5 products have the highest ordered quantity?,C_ORDERLINE|M_PRODUCT,join,up to five product rows with summed quantity,Product-level aggregate.
+Q015,Which 5 products have the highest line net amount?,C_ORDERLINE|M_PRODUCT,join,up to five product rows with summed net amount,Product-level sales value.
+Q016,How many invoices are unpaid?,C_INVOICE,aggregate,single row with unpaid invoice count,Core invoice smoke test.
+Q017,What is the total unpaid invoice amount?,C_INVOICE,aggregate,single row with total unpaid amount,Uses ISPAID and GRANDTOTAL.
+Q018,Show the 5 largest unpaid invoices.,C_INVOICE,lookup,up to five invoice rows with totals,Invoice ranking.
+Q019,How many paid invoices do we have?,C_INVOICE,aggregate,single row with paid invoice count,Checks ISPAID='Y'.
+Q020,What is the total invoice amount by paid status?,C_INVOICE,aggregate,rows grouped by ISPAID with total amount,Grouped invoice aggregate.
+Q021,List invoices issued last month.,C_INVOICE,lookup,rows with invoice numbers and invoice dates,Date filtering over invoices.
+Q022,How many business partners are referenced by orders and invoices?,C_BPARTNER,aggregate,single row with partner count,Temporary derived partner dimension.
+Q023,List 5 business partners.,C_BPARTNER,lookup,up to five partner rows,Partner names are temporary placeholders until real export.
+Q024,How many document types are available?,C_DOCTYPE,aggregate,single row with document-type count,Document type reference.
+Q025,List sales order document types.,C_DOCTYPE,lookup,rows with document type names or base types,Reference lookup.
+Q026,Show order to invoice lifecycle rows.,LPN_ORDER_FLOW,multi_step,rows combining order and invoice lifecycle fields,Temporary lifecycle view.
+Q027,Which order flow rows are not fully invoiced?,LPN_ORDER_FLOW,multi_step,rows where ordered quantity exceeds invoiced quantity,Uses QTYORDERED and QTYINVOICED.
+Q028,How many shipment rows exist in the order flow view?,LPN_ORDER_FLOW,aggregate,single row with shipment-related count,Temporary shipment lifecycle context.
+Q029,How many invoice payment records are unpaid?,LPN_INVOICE_PAYMENT,aggregate,single row with unpaid payment-view count,Temporary payment allocation view.
+Q030,Show the 5 largest payment amounts.,LPN_INVOICE_PAYMENT,lookup,up to five payment rows with amounts,Payment amount ranking.

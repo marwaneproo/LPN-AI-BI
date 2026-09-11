@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Component classes for the LPN landing/login/chatbot surfaces, ported from
+ * the frontend_ezyZip prototype. Prefixed with "lb-" (landing/brand) so they
+ * never collide with the existing hand-written design system in theme.css
+ * (which already defines .card, .badge, etc. for the authenticated app).
+ */
+@layer components {
+  .lb-card {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-card;
+  }
+  .lb-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-lpn-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-lpn-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lpn-500 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .lb-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-ink transition hover:border-lpn-300 hover:text-lpn-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lpn-500;
+  }
+  .lb-input-field {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-ink placeholder:text-slate-400 focus:border-lpn-400 focus:outline-none focus:ring-2 focus:ring-lpn-100;
+  }
+  .lb-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+}

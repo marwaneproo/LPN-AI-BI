@@ -1,0 +1,574 @@
+{
+  "generated_at": "2026-06-01T11:02:37.547946+00:00",
+  "source_tables": {
+    "c_order": 3350,
+    "c_orderline": 67862,
+    "c_invoice": 1182,
+    "c_invoiceline": 62146,
+    "c_bpartner": 313,
+    "m_product": 16345,
+    "m_product_category": 26,
+    "c_doctype": 7,
+    "c_tax": 3,
+    "ad_org": 1,
+    "c_allocationline": 245,
+    "c_allocationhdr": 136,
+    "c_payment": 134,
+    "m_inout": 4667,
+    "m_inoutline": 181631,
+    "m_warehouse": 1,
+    "m_locator": 1,
+    "rv_storage": 58826,
+    "ad_user": 70,
+    "m_product_po": 46471,
+    "c_bpartner_vendor": 9633,
+    "m_product_type": 27,
+    "m_product_theme": 1487,
+    "m_product_collection": 86183,
+    "products_without_supplier": 3,
+    "c_bp_group": 1,
+    "c_bpartner_location": 344,
+    "c_location": 296,
+    "c_paymentterm": 5,
+    "c_salesregion": 13,
+    "m_pricelist": 5,
+    "c_region": 16,
+    "c_city": 302
+  },
+  "dimension_tables": {
+    "dim_commercial": 71,
+    "dim_customer": 314,
+    "dim_date": 121,
+    "dim_document_type": 8,
+    "dim_geography": 345,
+    "dim_payment_term": 6,
+    "dim_price_list": 6,
+    "dim_product": 16346,
+    "dim_product_category": 27,
+    "dim_sales_region": 14,
+    "dim_supplier": 9634,
+    "dim_warehouse": 2
+  },
+  "fact_tables": {
+    "fact_sales_order": 3350,
+    "fact_sales_order_line": 67862,
+    "fact_invoice": 1182,
+    "fact_invoice_line": 62146,
+    "fact_delivery": 4667,
+    "fact_delivery_line": 181631,
+    "fact_payment_allocation": 245,
+    "fact_stock_snapshot": 58826
+  },
+  "mart_tables": {
+    "mart_sales_by_commercial": 20,
+    "mart_sales_by_customer": 295,
+    "mart_sales_by_product": 13975,
+    "mart_sales_by_region": 32,
+    "mart_sales_by_supplier": 34,
+    "mart_sales_overview": 5
+  },
+  "row_checks": [
+    {
+      "fact": "fact_sales_order",
+      "source": "c_order",
+      "source_rows": 3350,
+      "fact_rows": 3350,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "source": "c_orderline",
+      "source_rows": 67862,
+      "fact_rows": 67862,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_invoice",
+      "source": "c_invoice",
+      "source_rows": 1182,
+      "fact_rows": 1182,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_invoice_line",
+      "source": "c_invoiceline",
+      "source_rows": 62146,
+      "fact_rows": 62146,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_delivery",
+      "source": "m_inout",
+      "source_rows": 4667,
+      "fact_rows": 4667,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_delivery_line",
+      "source": "m_inoutline",
+      "source_rows": 181631,
+      "fact_rows": 181631,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_payment_allocation",
+      "source": "c_allocationline",
+      "source_rows": 245,
+      "fact_rows": 245,
+      "status": "PASS"
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "source": "rv_storage",
+      "source_rows": 58826,
+      "fact_rows": 58826,
+      "status": "PASS"
+    }
+  ],
+  "total_checks": [
+    {
+      "name": "sales_order_grand_total",
+      "source_value": 16709787.1106,
+      "output_value": 16709787.1106,
+      "difference": 0.0,
+      "status": "PASS"
+    },
+    {
+      "name": "sales_order_line_net_amount",
+      "source_value": 16709710.3906,
+      "output_value": 16709710.3906,
+      "difference": 0.0,
+      "status": "PASS"
+    },
+    {
+      "name": "invoice_grand_total",
+      "source_value": 16757554.02,
+      "output_value": 16757554.02,
+      "difference": 0.0,
+      "status": "PASS"
+    },
+    {
+      "name": "invoice_line_net_amount",
+      "source_value": 16774348.62,
+      "output_value": 16774348.62,
+      "difference": 0.0,
+      "status": "PASS"
+    },
+    {
+      "name": "payment_allocation_amount",
+      "source_value": 1706047.19,
+      "output_value": 1706047.19,
+      "difference": 0.0,
+      "status": "PASS"
+    }
+  ],
+  "zero_key_profiles": [
+    {
+      "fact": "fact_sales_order",
+      "column": "sales_order_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "order_date_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "commercial_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "geography_key",
+      "zero_key_rows": 4,
+      "row_count": 3350,
+      "zero_key_rate": 0.0012
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "payment_term_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "price_list_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "document_type_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order",
+      "column": "warehouse_key",
+      "zero_key_rows": 0,
+      "row_count": 3350,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "sales_order_line_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "order_date_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "commercial_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "product_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "product_category_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "supplier_key",
+      "zero_key_rows": 331,
+      "row_count": 67862,
+      "zero_key_rate": 0.0049
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "warehouse_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_sales_order_line",
+      "column": "document_type_key",
+      "zero_key_rows": 0,
+      "row_count": 67862,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "invoice_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "invoice_date_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "commercial_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "geography_key",
+      "zero_key_rows": 13,
+      "row_count": 1182,
+      "zero_key_rate": 0.011
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "payment_term_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "price_list_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice",
+      "column": "document_type_key",
+      "zero_key_rows": 0,
+      "row_count": 1182,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "invoice_line_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "invoice_date_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "commercial_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "product_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "product_category_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "supplier_key",
+      "zero_key_rows": 2064,
+      "row_count": 62146,
+      "zero_key_rate": 0.0332
+    },
+    {
+      "fact": "fact_invoice_line",
+      "column": "document_type_key",
+      "zero_key_rows": 0,
+      "row_count": 62146,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery",
+      "column": "delivery_key",
+      "zero_key_rows": 0,
+      "row_count": 4667,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery",
+      "column": "movement_date_key",
+      "zero_key_rows": 0,
+      "row_count": 4667,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 4667,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery",
+      "column": "geography_key",
+      "zero_key_rows": 4,
+      "row_count": 4667,
+      "zero_key_rate": 0.0009
+    },
+    {
+      "fact": "fact_delivery",
+      "column": "warehouse_key",
+      "zero_key_rows": 0,
+      "row_count": 4667,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery",
+      "column": "document_type_key",
+      "zero_key_rows": 4667,
+      "row_count": 4667,
+      "zero_key_rate": 1.0
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "delivery_line_key",
+      "zero_key_rows": 0,
+      "row_count": 181631,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "movement_date_key",
+      "zero_key_rows": 0,
+      "row_count": 181631,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 181631,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "product_key",
+      "zero_key_rows": 10,
+      "row_count": 181631,
+      "zero_key_rate": 0.0001
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "product_category_key",
+      "zero_key_rows": 10,
+      "row_count": 181631,
+      "zero_key_rate": 0.0001
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "supplier_key",
+      "zero_key_rows": 144,
+      "row_count": 181631,
+      "zero_key_rate": 0.0008
+    },
+    {
+      "fact": "fact_delivery_line",
+      "column": "warehouse_key",
+      "zero_key_rows": 0,
+      "row_count": 181631,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_payment_allocation",
+      "column": "payment_allocation_key",
+      "zero_key_rows": 0,
+      "row_count": 245,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_payment_allocation",
+      "column": "allocation_date_key",
+      "zero_key_rows": 0,
+      "row_count": 245,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_payment_allocation",
+      "column": "customer_key",
+      "zero_key_rows": 0,
+      "row_count": 245,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_payment_allocation",
+      "column": "commercial_key",
+      "zero_key_rows": 245,
+      "row_count": 245,
+      "zero_key_rate": 1.0
+    },
+    {
+      "fact": "fact_payment_allocation",
+      "column": "payment_document_type_key",
+      "zero_key_rows": 245,
+      "row_count": 245,
+      "zero_key_rate": 1.0
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "column": "stock_snapshot_key",
+      "zero_key_rows": 0,
+      "row_count": 58826,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "column": "snapshot_date_key",
+      "zero_key_rows": 0,
+      "row_count": 58826,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "column": "product_key",
+      "zero_key_rows": 0,
+      "row_count": 58826,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "column": "product_category_key",
+      "zero_key_rows": 0,
+      "row_count": 58826,
+      "zero_key_rate": 0.0
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "column": "supplier_key",
+      "zero_key_rows": 3334,
+      "row_count": 58826,
+      "zero_key_rate": 0.0567
+    },
+    {
+      "fact": "fact_stock_snapshot",
+      "column": "warehouse_key",
+      "zero_key_rows": 42250,
+      "row_count": 58826,
+      "zero_key_rate": 0.7182
+    }
+  ],
+  "overall_status": "PASS"
+}

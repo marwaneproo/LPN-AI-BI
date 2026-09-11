@@ -1,0 +1,32 @@
+{
+  "snapshot_id": "lpn-YYYYMMDD-vN",
+  "exported_at": "ISO-8601 datetime",
+  "exported_by": "Youssef Bahaddou",
+  "source_system": "Compiere on Oracle 11g - LPN Mohammedia",
+  "tables": [
+    {
+      "name": "C_ORDER",
+      "csv_file": "csv/C_ORDER.csv",
+      "row_count": 0,
+      "exported_columns": [
+        "C_ORDER_ID",
+        "AD_CLIENT_ID",
+        "AD_ORG_ID",
+        "DOCUMENTNO",
+        "DOCSTATUS",
+        "C_BPARTNER_ID",
+        "DATEORDERED",
+        "GRANDTOTAL",
+        "TOTALLINES",
+        "ISSOTRX",
+        "SALESREP_ID",
+        "C_DOCTYPETARGET_ID",
+        "CREATED",
+        "UPDATED"
+      ],
+      "filter_used": "Created >= TO_DATE('2021-01-01','YYYY-MM-DD')"
+    }
+  ],
+  "notes": ""
+}
+

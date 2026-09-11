@@ -1,0 +1,37 @@
+[project]
+name = "lpn-ai-bi-python"
+version = "0.1.0"
+description = "Python workspace for LPN AI-BI services."
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "data-import",
+    "eval",
+    "predictive",
+    "schema-retrieval",
+    "sql-validator",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.8.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+    "data-import",
+    "eval",
+    "predictive",
+    "schema-retrieval",
+    "sql-validator",
+]
+
+[tool.uv.sources]
+data-import = { workspace = true }
+eval = { workspace = true }
+predictive = { workspace = true }
+schema-retrieval = { workspace = true }
+sql-validator = { workspace = true }

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="100%" height="100%">
+  <style>
+    .outline { 
+      stroke: #2C3B51; 
+      stroke-width: 4.5; 
+      stroke-linecap: round; 
+      stroke-linejoin: round; 
+      fill: none; 
+    }
+    .teal-fill { 
+      fill: #7DB0B8; 
+      stroke: #2C3B51; 
+      stroke-width: 4.5; 
+      stroke-linejoin: round; 
+    }
+    .yellow-fill { 
+      fill: #F2CA63; 
+      stroke: #2C3B51; 
+      stroke-width: 4.5; 
+      stroke-linejoin: round; 
+    }
+    .teal-highlight { 
+      stroke: #9CC5C9; 
+      stroke-width: 3; 
+      stroke-linecap: round; 
+      fill: none; 
+    }
+    .yellow-highlight { 
+      stroke: #FBE08E; 
+      stroke-width: 3; 
+      stroke-linecap: round; 
+      fill: none; 
+    }
+    .white-line { 
+      stroke: #FFFFFF; 
+      stroke-width: 4.5; 
+      stroke-linecap: round; 
+      fill: none; 
+    }
+  </style>
+
+  <g transform="translate(4, 0)">
+    
+    <path class="yellow-fill" d="M 112 90 H 178 A 12 12 0 0 1 190 102 V 190 L 155 160 H 112 A 12 12 0 0 1 100 148 V 102 A 12 12 0 0 1 112 90 Z" />
+    <path class="yellow-highlight" d="M 116 95 H 176 A 7 7 0 0 1 183 102 V 155" />
+
+    <path class="teal-fill" d="M 52 50 H 148 A 12 12 0 0 1 160 62 V 118 A 12 12 0 0 1 148 130 H 75 L 40 160 V 62 A 12 12 0 0 1 52 50 Z" />
+    <path class="teal-highlight" d="M 56 55 H 146 A 7 7 0 0 1 153 62 V 115" />
+
+    <path class="outline" d="M 65 74 H 135" />
+    <path class="outline" d="M 65 94 H 135" />
+    <path class="outline" d="M 90 114 H 110" />
+    <path class="white-line" d="M 119 114 L 120 114" /> 
+    <path class="white-line" d="M 128 114 H 135" />       
+
+    <path class="outline" d="M 35 62 Q 35 35 55 35" />
+    <path class="outline" d="M 65 35 L 67 35" />
+    
+    <path class="outline" d="M 125 176 L 127 176" />
+    <path class="outline" d="M 136 176 H 152" />
+    
+  </g>
+</svg>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <clipPath id="bigBubbleClip">
+      <path d="M 70 80 L 355 80 Q 375 80 375 100 L 375 310 Q 375 330 355 330 L 180 330 L 55 405 L 115 330 L 70 330 Q 50 330 50 310 L 50 100 Q 50 80 70 80 Z"/>
+    </clipPath>
+    <clipPath id="yellowBubbleClip">
+      <path d="M 290 240 L 440 240 Q 460 240 460 260 L 460 385 Q 460 405 440 405 L 415 405 L 460 465 L 370 405 L 290 405 Q 270 405 270 385 L 270 260 Q 270 240 290 240 Z"/>
+    </clipPath>
+  </defs>
+
+  <path d="M 55 65 Q 65 47 90 60" stroke="#303F76" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+  <path d="M 70 80 L 355 80 Q 375 80 375 100 L 375 310 Q 375 330 355 330 L 180 330 L 55 405 L 115 330 L 70 330 Q 50 330 50 310 L 50 100 Q 50 80 70 80 Z"
+        fill="#91B5BB"/>
+  <path d="M 115 88 L 367 88 L 367 280 L 333 280 L 333 123 L 115 123 Z"
+        fill="#A3C5CB" clip-path="url(#bigBubbleClip)"/>
+  <path d="M 70 80 L 355 80 Q 375 80 375 100 L 375 310 Q 375 330 355 330 L 180 330 L 55 405 L 115 330 L 70 330 Q 50 330 50 310 L 50 100 Q 50 80 70 80 Z"
+        fill="none" stroke="#303F76" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <line x1="100" y1="145" x2="320" y2="145" stroke="#303F76" stroke-width="8" stroke-linecap="round"/>
+  <line x1="100" y1="200" x2="320" y2="200" stroke="#303F76" stroke-width="8" stroke-linecap="round"/>
+  <line x1="140" y1="255" x2="280" y2="255" stroke="#303F76" stroke-width="8" stroke-linecap="round"/>
+
+  <line x1="195" y1="298" x2="208" y2="298" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <line x1="222" y1="298" x2="270" y2="298" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+
+  <path d="M 290 240 L 440 240 Q 460 240 460 260 L 460 385 Q 460 405 440 405 L 415 405 L 460 465 L 370 405 L 290 405 Q 270 405 270 385 L 270 260 Q 270 240 290 240 Z"
+        fill="#F2C548"/>
+  <path d="M 270 245 L 460 245 L 460 285 L 270 285 Z"
+        fill="#F6D67A" clip-path="url(#yellowBubbleClip)"/>
+  <path d="M 290 240 L 440 240 Q 460 240 460 260 L 460 385 Q 460 405 440 405 L 415 405 L 460 465 L 370 405 L 290 405 Q 270 405 270 385 L 270 260 Q 270 240 290 240 Z"
+        fill="none" stroke="#303F76" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <line x1="290" y1="475" x2="312" y2="475" stroke="#303F76" stroke-width="6" stroke-linecap="round"/>
+  <line x1="322" y1="475" x2="360" y2="475" stroke="#303F76" stroke-width="6" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+datasources:
+  app-admin:
+    url: ${APP_ADMIN_DATABASE_URL:jdbc:postgresql://localhost:5433/lpn_ai_bi}
+    username: ${APP_ADMIN_DATABASE_USER:lpn_app_admin}
+    password: ${APP_ADMIN_DATABASE_PASSWORD:change_me_app_admin}
+  readonly:
+    url: ${READONLY_DATABASE_URL:jdbc:postgresql://localhost:5433/lpn_ai_bi?options=-c%20statement_timeout%3D30000%20-c%20search_path%3Dbusiness}
+    username: ${READONLY_DATABASE_USER:lpn_ai_readonly}
+    password: ${READONLY_DATABASE_PASSWORD:change_me_ai_readonly}
+
+sql-validator:
+  base-url: ${SQL_VALIDATOR_BASE_URL:http://localhost:8086}
+
+sql-executor:
+  query-timeout-seconds: ${SQL_EXECUTOR_QUERY_TIMEOUT_SECONDS:30}
+  max-row-count: ${SQL_EXECUTOR_MAX_ROW_COUNT:10000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

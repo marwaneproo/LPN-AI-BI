@@ -1,0 +1,56 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Modern dashboard pie chart icon</title>
+  <desc id="desc">A sleek three-part pie chart icon with rounded geometric segments and transparent background.</desc>
+
+  <defs>
+    <linearGradient id="blueGradient" x1="71" y1="89" x2="368" y2="452" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#36A9FF"/>
+      <stop offset="0.52" stop-color="#2597EF"/>
+      <stop offset="1" stop-color="#1479D4"/>
+    </linearGradient>
+
+    <linearGradient id="yellowGradient" x1="280" y1="44" x2="462" y2="249" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD84A"/>
+      <stop offset="0.5" stop-color="#FFC01A"/>
+      <stop offset="1" stop-color="#FFAA00"/>
+    </linearGradient>
+
+    <linearGradient id="greenGradient" x1="318" y1="282" x2="454" y2="441" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#62D66B"/>
+      <stop offset="0.55" stop-color="#42B95A"/>
+      <stop offset="1" stop-color="#279B46"/>
+    </linearGradient>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0B1025" flood-opacity="0.22"/>
+    </filter>
+
+    <filter id="subtleGlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#FFFFFF" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <!-- Main blue segment -->
+    <path
+      d="M244.3 66.2C149.1 71.9 73.6 151 73.6 247.7c0 100.4 81.4 181.8 181.8 181.8 39.6 0 76.2-12.6 106.1-34.1 8.8-6.3 10.5-18.8 3.8-27.3L255.4 228.4V79.1c0-7.4-4.1-13.3-11.1-12.9Z"
+      fill="url(#blueGradient)"
+      filter="url(#subtleGlow)"/>
+
+    <!-- Top-right yellow segment -->
+    <path
+      d="M285.1 42.8c88.6 8.9 159.5 79.7 168.4 168.4 1.1 11.4-7.8 21.3-19.2 21.3H286.9c-10.5 0-19-8.5-19-19V62c0-11.4 5.9-20.4 17.2-19.2Z"
+      fill="url(#yellowGradient)"
+      filter="url(#subtleGlow)"/>
+
+    <!-- Bottom-right green segment -->
+    <path
+      d="M308.6 260.6h126.8c11.8 0 21 10.5 18.9 22.1-8.9 49.9-37.4 93-77.5 121.1-8.5 6-20.2 3.9-26.5-4.4l-56.9-75.2-35.2-47c-4.8-6.4-.2-16.6 7.8-16.6h42.6Z"
+      fill="url(#greenGradient)"
+      filter="url(#subtleGlow)"/>
+  </g>
+
+  <!-- Minimal highlight accents -->
+  <path d="M114.5 201.8c13.4-44.4 47.2-80.1 90.3-96" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.18"/>
+  <path d="M305.1 77.8c43.6 8.4 81.9 34.1 106.4 70.6" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.2"/>
+</svg>

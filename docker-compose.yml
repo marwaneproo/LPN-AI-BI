@@ -1,0 +1,152 @@
+name: lpn-ai-bi
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_APP_ADMIN_PASSWORD}
+      POSTGRES_APP_ADMIN_PASSWORD: ${POSTGRES_APP_ADMIN_PASSWORD}
+      POSTGRES_AI_READONLY_PASSWORD: ${POSTGRES_AI_READONLY_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - default
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - default
+
+  schema-retrieval:
+    build:
+      context: .
+      dockerfile: services-python/schema-retrieval/Dockerfile
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      SCHEMA_CSV_PATH: /app/schema_metadata.csv
+      COLLECTION_NAME: lpn_schema
+      ADMIN_KEY: ${SCHEMA_RETRIEVAL_ADMIN_KEY:-change_me_schema_admin}
+      EMBEDDING_BACKEND: hash
+      EMBEDDING_MODEL: paraphrase-multilingual-MiniLM-L12-v2
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./docs/schema_metadata.csv:/app/schema_metadata.csv:ro
+    depends_on:
+      - qdrant
+    networks:
+      - default
+
+  sql-validator:
+    build:
+      context: .
+      dockerfile: services-python/sql-validator/Dockerfile
+    ports:
+      - "8086:8086"
+    networks:
+      - default
+
+  llm-orchestrator:
+    build:
+      context: .
+      dockerfile: services-java/llm-orchestrator/Dockerfile
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      SQL_MODEL: ${SQL_MODEL:-qwen2.5-coder:7b}
+      SQL_REASONING_MODEL: ${SQL_REASONING_MODEL:-qwen2.5-coder:14b}
+      SQL_FALLBACK_MODEL: ${SQL_FALLBACK_MODEL:-qwen2.5-coder:7b}
+      NARRATOR_MODEL: ${NARRATOR_MODEL:-llama3.1:latest}
+      OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-240}
+      SQL_MODEL_TIMEOUT_SECONDS: ${SQL_MODEL_TIMEOUT_SECONDS:-${OLLAMA_TIMEOUT_SECONDS:-240}}
+      SQL_REASONING_MODEL_TIMEOUT_SECONDS: ${SQL_REASONING_MODEL_TIMEOUT_SECONDS:-360}
+      NARRATOR_MODEL_TIMEOUT_SECONDS: ${NARRATOR_MODEL_TIMEOUT_SECONDS:-150}
+      OLLAMA_KEEP_ALIVE_SECONDS: ${OLLAMA_KEEP_ALIVE_SECONDS:-1800}
+      OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
+      SQL_MODEL_NUM_PREDICT: ${SQL_MODEL_NUM_PREDICT:-256}
+      NARRATOR_MODEL_NUM_PREDICT: ${NARRATOR_MODEL_NUM_PREDICT:-512}
+      SQL_MODEL_NUM_GPU: ${SQL_MODEL_NUM_GPU:-0}
+      NARRATOR_MODEL_NUM_GPU: ${NARRATOR_MODEL_NUM_GPU:-0}
+      SCHEMA_RETRIEVAL_BASE_URL: http://schema-retrieval:8084
+      SQL_EXECUTOR_BASE_URL: http://sql-executor:8080
+      PREDICTIVE_BASE_URL: http://predictive:8000
+      APP_DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      APP_DATABASE_USER: lpn_app_admin
+      APP_DATABASE_PASSWORD: ${POSTGRES_APP_ADMIN_PASSWORD}
+      AUTH_BOOTSTRAP_ADMIN_USERNAME: ${AUTH_BOOTSTRAP_ADMIN_USERNAME:-admin}
+      AUTH_BOOTSTRAP_ADMIN_PASSWORD: ${AUTH_BOOTSTRAP_ADMIN_PASSWORD:-}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
+      PERFORMANCE_TRACING_ENABLED: ${PERFORMANCE_TRACING_ENABLED:-true}
+    ports:
+      - "8081:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      schema-retrieval:
+        condition: service_started
+      sql-executor:
+        condition: service_started
+      predictive:
+        condition: service_started
+    networks:
+      - default
+
+  sql-executor:
+    build:
+      context: .
+      dockerfile: services-java/sql-executor/Dockerfile
+    environment:
+      APP_ADMIN_DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      APP_ADMIN_DATABASE_USER: lpn_app_admin
+      APP_ADMIN_DATABASE_PASSWORD: ${POSTGRES_APP_ADMIN_PASSWORD}
+      READONLY_DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}?options=-c%20statement_timeout%3D30000%20-c%20search_path%3Dbusiness
+      READONLY_DATABASE_USER: lpn_ai_readonly
+      READONLY_DATABASE_PASSWORD: ${POSTGRES_AI_READONLY_PASSWORD}
+      SQL_VALIDATOR_BASE_URL: http://sql-validator:8086
+      SQL_EXECUTOR_QUERY_TIMEOUT_SECONDS: ${SQL_EXECUTOR_QUERY_TIMEOUT_SECONDS:-30}
+      SQL_EXECUTOR_MAX_ROW_COUNT: ${SQL_EXECUTOR_MAX_ROW_COUNT:-10000}
+    ports:
+      - "8082:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      sql-validator:
+        condition: service_started
+    networks:
+      - default
+
+  predictive:
+    build:
+      context: .
+      dockerfile: services-python/predictive/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://lpn_ai_readonly:${POSTGRES_AI_READONLY_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    ports:
+      - "8085:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - default
+
+volumes:
+  pgdata:
+  qdrant_data:
+
+networks:
+  default:
+    name: lpn-ai-bi-net
