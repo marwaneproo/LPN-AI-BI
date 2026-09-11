@@ -271,6 +271,6 @@ This project was built during an internship (stage) at **LPN (Librairie Papeteri
 
 ## License
 
-Internal / academic project developed during an internship at LPN. No open-source license is granted; all rights reserved by the author and LPN. This repository is shared for portfolio purposes only.
+Internal / academic project developed during an internship at LPN. No open-source license is granted; all rights reserved by the author and LPN. This repository is shared for portfolio purposes only. 
  
  
