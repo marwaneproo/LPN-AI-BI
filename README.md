@@ -21,7 +21,7 @@ The platform therefore connects the complete analytical chain:
        BUSINESS INTELLIGENCE
                   |
                   v
-            ANALYTICS
+              ANALYTICS
                   |
           +-------+--------+
           v                v
