@@ -88,8 +88,6 @@ Polyglot microservices behind a single Docker Compose stack, following the DATA 
 | Database | PostgreSQL 16 | `5433` -> container `5432` |
 | Local LLMs | Native Ollama: `qwen2.5-coder:7b` + `llama3.1:latest` | - |
 
-The full architectural rationale lives in [`docs/architecture/LPN_AI_BI_Production_Plan.md`](./docs/architecture/LPN_AI_BI_Production_Plan.md).
-The week-by-week implementation plan lives in [`docs/architecture/AI_AGENT_TASKS_WEEKS_1_TO_4.md`](./docs/architecture/AI_AGENT_TASKS_WEEKS_1_TO_4.md).
 
 ---
 
@@ -208,7 +206,7 @@ npm run dev
 
 Open `http://127.0.0.1:5173` and ask, for example, `How many orders were placed last month?`.
 
-On the first authenticated start, set `AUTH_BOOTSTRAP_ADMIN_PASSWORD` in `.env` to a unique password of at least 12 characters. The service never creates or advertises a default `admin/admin` account. See [`docs/architecture/AUTHENTICATION.md`](./docs/architecture/AUTHENTICATION.md) for the full authentication contract.
+On the first authenticated start, set `AUTH_BOOTSTRAP_ADMIN_PASSWORD` in `.env` to a unique password of at least 12 characters. The service never creates or advertises a default `admin/admin` account. See [`docs/architecture/AUTHENTICATION.md`]) for the full authentication contract.
 
 On Windows, you can also double-click:
 
@@ -245,7 +243,6 @@ The predictive service (`services-python/predictive`) produces time-series sales
 - The frontend never stores an auth token in web storage.
 - The AI pipeline only ever executes against a **read-only** PostgreSQL role (`POSTGRES_AI_READONLY_PASSWORD`), separate from the application's admin role.
 
-Full details: [`docs/architecture/AUTHENTICATION.md`](./docs/architecture/AUTHENTICATION.md).
 
 ---
 
