@@ -4,7 +4,7 @@
 
 LPN AI BI is built around a simple principle:
 
-> **Data becomes valuable when it can be transformed into understanding, foresight and better decisions.**
+ **Data becomes valuable when it can be transformed into understanding, foresight and better decisions.**
 
 The platform therefore connects the complete analytical chain:
 
@@ -41,8 +41,8 @@ The platform therefore connects the complete analytical chain:
 **Internship project (stage) — Marwane El Abbadi**
 **Client:** Librairie Papeterie Nationale (LPN), Mohammedia
 
-> Real company data and confidential information are not included in this repository.
-> Sample data referenced in the docs is synthetic or anonymized and provided only for demonstration purposes.
+Real company data and confidential information are not included in this repository.
+Sample data referenced in the docs is synthetic or anonymized and provided only for demonstration purposes.
 
 A web application that lets LPN query an imported Compiere ERP snapshot using natural language (French / English) and produces sales and stock forecasts. The system runs entirely on a local Docker Compose stack. It does **not** connect to LPN's Oracle database at runtime; data flows in one direction through periodic CSV/SQL snapshot bundles imported into PostgreSQL.
 
