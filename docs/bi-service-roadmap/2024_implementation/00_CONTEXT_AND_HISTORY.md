@@ -35,7 +35,7 @@
 
 ## 1. What the project is
 
-**LPN AI-BI** is a PFE (graduation project) that turns the LPN ERP (Compiere/Oracle
+**LPN AI-BI** is a PFA (graduation project) that turns the LPN ERP (Compiere/Oracle
 origin) sales data into a modern analytical stack:
 
 - A **rebuilt sales data warehouse** (`processus de vente`) in PostgreSQL, star-schema,
@@ -45,7 +45,7 @@ origin) sales data into a modern analytical stack:
   livraisons, paiements, articles, clients, commerciaux, stocks).
 
 The data was extracted from LPN's production ERP into Excel/CSV files
-(`Youssef_Extractions/`). **We never connect to LPN's Oracle/Compiere DB** — the flat
+(`Marwane_Extractions/`). **We never connect to LPN's Oracle/Compiere DB** — the flat
 files are the only source.
 
 ---
@@ -56,8 +56,8 @@ There are **two source windows**, both exported from the same ERP:
 
 | Window | Source | Format | Status in DB |
 |---|---|---|---|
-| **2024** (full year, Jan–Dec) | `Youssef_Extractions/data/Exported_LPN/2024_01..2024_35` | xlsx (some multi-GB) | ❌ **NOT loaded** |
-| **2025–2026** (Jun 2024 → Jun 2026) | `Youssef_Extractions/vente_2025_2026_import/csv/` | CSV (clean) | ✅ Loaded in `business` |
+| **2024** (full year, Jan–Dec) | `Marwane_Extractions/data/Exported_LPN/2024_01..2024_35` | xlsx (some multi-GB) | ❌ **NOT loaded** |
+| **2025–2026** (Jun 2024 → Jun 2026) | `Marwane_Extractions/vente_2025_2026_import/csv/` | CSV (clean) | ✅ Loaded in `business` |
 
 **Overlap:** Jun–Dec 2024 exists in *both* windows. The locked **dedup rule**:
 > Keep the **`2024_*`** row for any 2024 date; keep the **CSV** row for 2025–2026.
@@ -197,8 +197,8 @@ All of BI-01…BI-07 are **design/plan only** — **no DDL has been executed**, 
 ## 6. Target architecture (what "done" looks like)
 
 ```
-Youssef_Extractions/data/Exported_LPN/2024_*.xlsx   (2024 window)
-Youssef_Extractions/vente_2025_2026_import/csv/*.csv (2025-2026 window)
+Marwane_Extractions/data/Exported_LPN/2024_*.xlsx   (2024 window)
+Marwane_Extractions/vente_2025_2026_import/csv/*.csv (2025-2026 window)
         │  chunked / streamed loader  (openpyxl read_only + psycopg2 COPY)
         ▼
 staging.stg_*        ← both windows, composite PK (natural_key, _source_tag)
@@ -221,7 +221,7 @@ BI API (Spring) → 5 frontend pages → per-chart cases (next phase)
 ## 7. Locked decisions & HARD RULES (carry forward — never break)
 
 1. **Never** connect to LPN's Oracle/Compiere DB. Flat files only.
-2. **Never** delete/overwrite/move any source data under `Youssef_Extractions/`.
+2. **Never** delete/overwrite/move any source data under `Marwane_Extractions/`.
 3. **Never** modify the `business` schema (it serves the live dashboard + forecasting).
 4. **Never** load a multi-GB / >100 MB file fully into memory — **stream/chunk** (≤5,000-row
    batches via `openpyxl read_only=True`). Use the CSVs for M_PRODUCT / M_PRODUCT_PO.
