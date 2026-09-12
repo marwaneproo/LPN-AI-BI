@@ -209,7 +209,7 @@ The dim/fact DDL in `draft_schema_design.sql` is a prior draft and will be revie
 | `2024_16_M_PRODUCT.xlsx` | 2,272 MB | TRAP rule — use M_PRODUCT.csv |
 | `2024_18_M_PRODUCT_PO.xlsx` | 995 MB | TRAP rule — use M_PRODUCT_PO.csv |
 | `57_COMMERCIAL_CUSTOMER_PORTFOLIO_24M.xlsx` | varies | CA-trap — permanently excluded (BI-05 TRAP-01) |
-| `Youssef_Extractions/data/Exported_data_through_a_drive/` | — | Duplicate folder — archive candidate (BI-01) |
+| `Marwane_Extractions/data/Exported_data_through_a_drive/` | — | Duplicate folder — archive candidate (BI-01) |
 | `DATAWHAREHOUSE_EXPORT/1..4.xlsx` | 48 MB (3+4) | Junk/unnamed dump files (BI-01) |
 | `vente_clean_import/csv/` (18 CSV) | — | Superseded by `vente_2025_2026_import` |
 
