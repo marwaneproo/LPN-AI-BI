@@ -1,7 +1,7 @@
 {
   "snapshot_id": "lpn-YYYYMMDD-vN",
   "exported_at": "ISO-8601 datetime",
-  "exported_by": "Youssef Bahaddou",
+  "exported_by": "Marwane El Abbadi",
   "source_system": "Compiere on Oracle 11g - LPN Mohammedia",
   "tables": [
     {
