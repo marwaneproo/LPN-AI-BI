@@ -14,7 +14,7 @@
 
 **Hard rules (every task obeys these — never break):**
 1. Never connect to LPN Oracle/Compiere. Flat files only.
-2. Never delete/overwrite/move anything under `Youssef_Extractions/`.
+2. Never delete/overwrite/move anything under `Marwane_Extractions/`.
 3. Never modify the `business` schema (live dashboard + forecasting).
 4. Never load a >100 MB / multi-GB file fully into memory — stream/chunk (≤5,000 rows,
    `openpyxl read_only=True`). Use CSVs for `M_PRODUCT` / `M_PRODUCT_PO`.
