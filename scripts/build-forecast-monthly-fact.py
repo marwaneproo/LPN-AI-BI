@@ -60,9 +60,9 @@ class AggregatedFacts:
     source_files: list[str] = field(default_factory=list)
 
 
-# ---------------------------------------------------------------------------
+
 # Entry point
-# ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -140,9 +140,9 @@ def main() -> None:
     _print_summary(facts, partial_month)
 
 
-# ---------------------------------------------------------------------------
+
 # Path helpers
-# ---------------------------------------------------------------------------
+
 
 def _resolve_source_dir(arg: Path | None) -> Path:
     candidates = []
@@ -168,10 +168,8 @@ def _validate_output_path(output_dir: Path) -> None:
     except ValueError as exc:
         raise SystemExit(f"Refusing to write outside Youssef_Extractions: {output_dir}") from exc
 
-
-# ---------------------------------------------------------------------------
 # Loaders
-# ---------------------------------------------------------------------------
+
 
 def _load_invoice_headers(path: Path) -> pd.DataFrame:
     print(f"Loading {path.name} …")
@@ -237,9 +235,7 @@ def _load_invoice_lines(path: Path) -> pd.DataFrame:
     return df
 
 
-# ---------------------------------------------------------------------------
 # Aggregation
-# ---------------------------------------------------------------------------
 
 def _month_first(series: pd.Series) -> pd.Series:
     """Convert datetime series to first-of-month date (Python date objects)."""
@@ -346,18 +342,16 @@ def _aggregate(
     )
 
 
-# ---------------------------------------------------------------------------
+
 # CSV staging
-# ---------------------------------------------------------------------------
+
 
 def _write_csv(df: pd.DataFrame, path: Path) -> None:
     df.to_csv(path, index=False, encoding="utf-8-sig")
     print(f"  {path.name}  ({len(df):,} rows)")
 
 
-# ---------------------------------------------------------------------------
 # Manifest
-# ---------------------------------------------------------------------------
 
 def _build_manifest(
     facts: AggregatedFacts,
@@ -412,9 +406,8 @@ def _build_manifest(
     }
 
 
-# ---------------------------------------------------------------------------
 # PostgreSQL import
-# ---------------------------------------------------------------------------
+
 
 def _import_to_postgres(csv_dir: Path) -> None:
     conn = psycopg2.connect(
@@ -560,9 +553,9 @@ def _grant_readonly(cur: Any) -> None:
     print("  Granted SELECT on business.* to lpn_ai_readonly")
 
 
-# ---------------------------------------------------------------------------
+
 # Console summary
-# ---------------------------------------------------------------------------
+
 
 def _print_summary(facts: AggregatedFacts, partial_month: date) -> None:
     complete = facts.monthly[~facts.monthly["is_partial"]]
