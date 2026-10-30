@@ -6,9 +6,9 @@
 
 CREATE SCHEMA IF NOT EXISTS dwh_vente;
 
--- ============================================================
+
 -- Dimension tables
--- ============================================================
+
 
 CREATE TABLE dwh_vente.dim_date (
     date_key              integer PRIMARY KEY,
@@ -166,9 +166,7 @@ CREATE TABLE dwh_vente.dim_warehouse (
     UNIQUE (m_warehouse_id, m_locator_id)
 );
 
--- ============================================================
 -- Fact tables
--- ============================================================
 
 CREATE TABLE dwh_vente.fact_sales_order (
     sales_order_key       bigserial PRIMARY KEY,
@@ -328,9 +326,9 @@ CREATE TABLE dwh_vente.fact_stock_snapshot (
     stock_row_count            integer DEFAULT 1
 );
 
--- ============================================================
+
 -- Draft mart names for later Step 3/Step 4 implementation
--- ============================================================
+
 
 -- mart_sales_overview
 -- mart_sales_by_commercial
