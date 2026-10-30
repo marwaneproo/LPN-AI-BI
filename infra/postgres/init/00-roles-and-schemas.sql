@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS app.ai_bi_users (
   created_at timestamptz NOT NULL DEFAULT now(),
   decided_at timestamptz,
   decided_by text
+  
 );
 
 ALTER TABLE app.ai_bi_users OWNER TO lpn_app_admin;
@@ -74,6 +75,7 @@ CREATE TABLE IF NOT EXISTS app.ai_bi_sessions (
   user_id uuid NOT NULL REFERENCES app.ai_bi_users(id) ON DELETE CASCADE,
   created_at timestamptz NOT NULL DEFAULT now(),
   expires_at timestamptz NOT NULL
+  
 );
 
 ALTER TABLE app.ai_bi_sessions OWNER TO lpn_app_admin;
