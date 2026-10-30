@@ -9,6 +9,7 @@ import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
 
 class AuthRateLimiterTest {
+    
 
     @Test
     void blocksAttemptsAtTheConfiguredLimitAndCanResetAfterSuccess() {
@@ -22,4 +23,5 @@ class AuthRateLimiterTest {
         limiter.reset("login:alice");
         limiter.check("login:alice", 2, Duration.ofMinutes(15));
     }
+    
 }
