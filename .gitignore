@@ -1,4 +1,4 @@
-# ─── Secrets & local config ─────────────────────────────────────
+#  Secrets & local config 
 .env
 .env.*
 !.env.example
@@ -6,7 +6,7 @@
 *.key
 secrets/
 
-# ─── Node / Frontend ────────────────────────────────────────────
+# Node / Frontend 
 node_modules/
 dist/
 dist-electron/
@@ -20,7 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
-# ─── Java / Gradle / Spring Boot ────────────────────────────────
+# Java / Gradle / Spring Boot 
 .gradle/
 build/
 !**/src/**/build/
@@ -35,7 +35,7 @@ bin/
 hs_err_pid*
 replay_pid*
 
-# ─── .NET ───────────────────────────────────────────────────────
+#  .NET 
 [Bb]in/
 [Oo]bj/
 [Dd]ebug/
@@ -49,7 +49,7 @@ artifacts/
 TestResults/
 *.nupkg
 
-# ─── Python ─────────────────────────────────────────────────────
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -67,7 +67,7 @@ htmlcov/
 *.egg-info/
 .uv/
 
-# ─── IDE / Editor ───────────────────────────────────────────────
+#  IDE / Editor
 .idea/
 .vscode/
 *.swp
@@ -76,14 +76,14 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# ─── Docker / Infra runtime data ────────────────────────────────
+#  Docker / Infra runtime data 
 pgdata/
 qdrant_data/
 ollama_data/
 grafana_data/
 prometheus_data/
 
-# ─── ML / Data artifacts ────────────────────────────────────────
+# ML / Data artifacts 
 *.joblib
 *.pkl
 *.onnx
@@ -92,7 +92,7 @@ prometheus_data/
 models/
 checkpoints/
 
-# ─── Compiere snapshot exports (raw data — never commit) ────────
+# Compiere snapshot exports (raw data — never commit)
 docs/exports/*.zip
 docs/exports/*.csv
 docs/exports/*.xlsx
@@ -104,24 +104,24 @@ local-snapshots/
 !docs/exports/queries/
 Youssef_Extractions/
 
-# ─── Reports / generated output ─────────────────────────────────
+# Reports / generated output
 reports/
 *.tmp
 Rapport_PFE/
 
-# ─── Local launcher runtime logs ────────────────────────────────
+#  Local launcher runtime logs 
 logs/
 
-# ─── Local-native dev (embedded Qdrant store, DB dumps) ─────────
+#  Local-native dev (embedded Qdrant store, DB dumps) 
 .local/
 backups/
 
-# ─── Personal / private (never commit) ──────────────────────────
+#  Personal / private (never commit)
 cv_lettre_de_motivation/
 .claude/settings.local.json
 
-# ─── Not for the interns branch (personal tooling, AI session logs,
-#     legacy demos/POCs, and any real LPN data extracts) ──────────
+# Not for the interns branch (personal tooling, AI session logs,
+#     legacy demos/POCs, and any real LPN data extracts) 
 .claude/
 .agents/
 skills-lock.json
